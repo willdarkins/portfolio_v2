@@ -1,5 +1,5 @@
 import React from 'react'
-import { BiRightArrowAlt } from 'react-icons/bi'
+import { BiBriefcase, BiCodeCurly, BiHome, BiMailSend, BiRightArrowAlt } from 'react-icons/bi'
 
 const HeaderLeft = () => {
   return (
@@ -16,6 +16,28 @@ const HeaderLeft = () => {
             </li>
           ))}
         </ul>
+      </div>
+      <div className='fixed left-0 right-0 top-0 z-10 flex justify-evenly bg-sky-950 p-5 text-white md:hidden'>
+        <a href='#home'className='flex flex-col items-center justify-center'>
+          <BiHome className='text-2xl'/>
+          <span className='text-xs'>Home</span>
+        </a>
+
+                <a href='#experience'className='flex flex-col items-center justify-center'>
+          <BiBriefcase className='text-2xl'/>
+          <span className='text-xs'>Experience</span>
+        </a>
+
+                <a href='#projects'className='flex flex-col items-center justify-center'>
+          <BiCodeCurly className='text-2xl'/>
+          <span className='text-xs'>Projects</span>
+        </a>
+
+                <a href='#contact'className='flex flex-col items-center justify-center'>
+          <BiMailSend className='text-2xl'/>
+          <span className='text-xs'>Contact</span>
+        </a>
+
       </div>
     </div>
   )
