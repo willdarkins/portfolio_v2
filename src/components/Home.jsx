@@ -1,5 +1,5 @@
 import React from 'react'
-import profileImage from '../../public/profile_image.jpeg'
+import profileImage from '../../src/assets/profile_image.jpeg'
 import { BiLogoGithub, BiLogoLinkedin } from 'react-icons/bi'
 import { SiBluesky } from 'react-icons/si'
 
