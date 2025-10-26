@@ -19,6 +19,7 @@ const Home = () => {
         <p className='max-w-[500px] text-sm text-gray-500'> Fusce volutpat posuere dolor quis rhoncus. Nullam tortor turpis, sodales in lacinia in, consequat et risus. Pellentesque rutrum tempus nisl, in tristique ante congue eget. Vestibulum ut ex ac justo vulputate ultrices sed vel.</p>
         </div>
         
+      {/* social icons */}
         <div className='flex gap-3 '>
           <BiLogoGithub className='h-10 w-10 cursor-pointer rounded-full border-2 border-transparent bg-sky-950 p-2 text-white transition-all duration-200 hover:scale-110 hover:border-sky-950 hover:bg-white hover:text-sky-950 md:h-12 md:w-12'/>
           <BiLogoLinkedin className='h-10 w-10 cursor-pointer rounded-full border-2 border-transparent bg-sky-950 p-2 text-white transition-all duration-200 hover:scale-110 hover:border-sky-950 hover:bg-white hover:text-sky-950 md:h-12 md:w-12'/>
