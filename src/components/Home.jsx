@@ -1,5 +1,6 @@
 import React from 'react'
 import profileImage from '../../src/assets/profile_image.jpeg'
+import SocialIcon from "./SocialIcon";
 import { BiLogoGithub, BiLogoLinkedin } from 'react-icons/bi'
 import { SiBluesky } from 'react-icons/si'
 
@@ -14,17 +15,17 @@ const Home = () => {
 
       {/* heading and sub-heading */}
         <div className='space-y-1 sm:space-y-3'>
-        <h1 className='bg-linear-to-r  from-sky-600 to-sky-950 bg-clip-text text-4xl font-semibold text-transparent md:text-5xl lg:text-6xl'>Will Darkins</h1>
-        <h3 className='bg-linear-to-r  from-sky-600 to-sky-950 bg-clip-text text-xl font-semibold text-transparent md:text-2xl lg:text-3xl'>QA & Cyber Security Professional</h3>
-        <p className='max-w-[500px] text-sm text-gray-500'> Fusce volutpat posuere dolor quis rhoncus. Nullam tortor turpis, sodales in lacinia in, consequat et risus. Pellentesque rutrum tempus nisl, in tristique ante congue eget. Vestibulum ut ex ac justo vulputate ultrices sed vel.</p>
+        <h1 className='heading-primary'>Will Darkins</h1>
+        <h3 className='heading-sub '>QA & Cyber Security Professional</h3>
+        <p className='text-muted'> Fusce volutpat posuere dolor quis rhoncus. Nullam tortor turpis, sodales in lacinia in, consequat et risus. Pellentesque rutrum tempus nisl, in tristique ante congue eget. Vestibulum ut ex ac justo vulputate ultrices sed vel.</p>
         </div>
         
-      {/* social icons */}
-        <div className='flex gap-3 '>
-          <BiLogoGithub className='h-10 w-10 cursor-pointer rounded-full border-2 border-transparent bg-sky-950 p-2 text-white transition-all duration-200 hover:scale-110 hover:border-sky-950 hover:bg-white hover:text-sky-950 md:h-12 md:w-12'/>
-          <BiLogoLinkedin className='h-10 w-10 cursor-pointer rounded-full border-2 border-transparent bg-sky-950 p-2 text-white transition-all duration-200 hover:scale-110 hover:border-sky-950 hover:bg-white hover:text-sky-950 md:h-12 md:w-12'/>
-          <SiBluesky className='h-10 w-10 cursor-pointer rounded-full border-2 border-transparent bg-sky-950 p-2 text-white transition-all duration-200 hover:scale-110 hover:border-sky-950 hover:bg-white hover:text-sky-950 md:h-12 md:w-12'/>
-        </div>
+      {/* social */}
+<div className="flex gap-3">
+  <SocialIcon Icon={BiLogoGithub} href="https://github.com/willdarkins" />
+  <SocialIcon Icon={BiLogoLinkedin} href="https://www.linkedin.com/in/will-darkins/" />
+  <SocialIcon Icon={SiBluesky} href="https://bsky.app/profile/willdarkins.bsky.social" />
+</div>
       </div>
     </div>
   )

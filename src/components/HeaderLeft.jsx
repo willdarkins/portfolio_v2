@@ -18,22 +18,22 @@ const HeaderLeft = () => {
         </ul>
       </div>
       <div className='fixed left-0 right-0 top-0 z-10 flex justify-evenly bg-sky-950 p-5 text-white md:hidden'>
-        <a href='#home'className='flex flex-col items-center justify-center'>
+        <a href='#home'className='nav-item-styles'>
           <BiHome className='text-2xl'/>
           <span className='text-xs'>Home</span>
         </a>
 
-                <a href='#experience'className='flex flex-col items-center justify-center'>
+                <a href='#experience'className='nav-item-styles'>
           <BiBriefcase className='text-2xl'/>
           <span className='text-xs'>Experience</span>
         </a>
 
-                <a href='#projects'className='flex flex-col items-center justify-center'>
+                <a href='#projects'className='nav-item-styles'>
           <BiCodeCurly className='text-2xl'/>
           <span className='text-xs'>Projects</span>
         </a>
 
-                <a href='#contact'className='flex flex-col items-center justify-center'>
+                <a href='#contact'className='nav-item-styles'>
           <BiMailSend className='text-2xl'/>
           <span className='text-xs'>Contact</span>
         </a>
