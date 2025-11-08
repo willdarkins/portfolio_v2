@@ -17,7 +17,7 @@ const Experience = () => {
             .map((exp, index) => (
               <ExperienceItem
                 key={`${index}`}
-                title={exp.title}
+                company={exp.title}
                 jobTitle={exp.jobTitle}
                 description={exp.description}
               />
@@ -31,7 +31,7 @@ const Experience = () => {
             .map((exp, index) => (
               <ExperienceItem
                 key={`${index}`}
-                title={exp.title}
+                company={exp.title}
                 jobTitle={exp.jobTitle}
                 description={exp.description}
               />
