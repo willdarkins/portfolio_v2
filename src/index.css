@@ -32,4 +32,21 @@
     .nav-item-styles{
     @apply flex flex-col items-center justify-center;
   }
+
+  .experience-header{
+    @apply text-lg font-semibold md:text-2xl
+  }
+
+  .experience-title{
+    @apply font-light text-lg text-gray-600
+  }
+
+  .experience-description{
+    @apply text-sm text-gray-600
+  }
+
+  .experience-dot{
+    @apply absolute -left-3 top-10 h-5 w-5 rounded-full bg-sky-950;
+
+  }
 }

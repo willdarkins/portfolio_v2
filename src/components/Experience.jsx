@@ -8,9 +8,10 @@ const Experience = () => {
       <div className="flex flex-wrap gap-0 md:flex-nowrap md:gap-10 ">
         <div className="flex-1"></div>
         <div className="relative space-y-1 border-l-2 p-8 text-left">
-          <h3 className='text-lg font-semibold md:text-2xl '>Experience 1</h3>
-          <p className='font-light text-lg text-gray-600'>Job Title</p>
-          <p className='text-sm text-gray-600 '>Ut ullamco ad id sit. Commodo occaecat officia ad veniam ea consectetur id laborum mollit velit do eiusmod aute adipisicing. Mollit laborum nisi dolor exercitation pariatur aliquip veniam ut fugiat irure irure reprehenderit. Cillum id quis ipsum anim ea ea irure mollit.</p>
+          <h3 className='experience-header'>Experience 1</h3>
+          <p className='experience-title'>Job Title</p>
+          <p className='experience-description'>Ut ullamco ad id sit. Commodo occaecat officia ad veniam ea consectetur id laborum mollit velit do eiusmod aute adipisicing. Mollit laborum nisi dolor exercitation pariatur aliquip veniam ut fugiat irure irure reprehenderit. Cillum id quis ipsum anim ea ea irure mollit.</p>
+          <span className="experience-dot"></span>
         </div>
         <div className="flex-1"></div>
       </div>
