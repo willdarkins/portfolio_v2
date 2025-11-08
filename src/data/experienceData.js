@@ -1,5 +1,3 @@
-// src/data/experienceData.js
-
 const experienceData = [
   {
     company: "Experience 1",
