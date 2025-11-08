@@ -1,5 +1,3 @@
-import React from "react";
-
 const ExperienceItem = ({ company, jobTitle, description }) => {
   return (
         <div className="relative space-y-1 border-l-2 p-8 text-left">
