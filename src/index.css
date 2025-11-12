@@ -48,4 +48,16 @@
   .experience-dot{
     @apply absolute -left-3 top-10 h-5 w-5 rounded-full bg-sky-950;
   }
+  /* project stylings */
+  .project-headers{
+    @apply text-3xl font-semibold
+  }
+
+  .project-sub-headers{
+    @apply text-xl text-gray-700 
+  }
+
+  .project-body-text{
+    @apply text-sm text-gray-600
+  }
 }
