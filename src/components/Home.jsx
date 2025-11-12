@@ -1,4 +1,3 @@
-import React from 'react'
 import profileImage from '../../src/assets/profile_image.jpeg'
 import SocialIcon from "./SocialIcon";
 import { BiLogoGithub, BiLogoLinkedin } from 'react-icons/bi'

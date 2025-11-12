@@ -12,7 +12,7 @@
      bg-sky-950 p-2 text-white transition-all duration-200 hover:scale-110
       hover:border-sky-950 hover:bg-white hover:text-sky-950 md:h-12 md:w-12;
   }
-
+/* home stylings */
   .profile-image {
     @apply w-[250px] sm:w-[300px] rounded-full;
   }
@@ -31,5 +31,21 @@
 
     .nav-item-styles{
     @apply flex flex-col items-center justify-center;
+  }
+/* experience stylings */
+  .experience-header{
+    @apply text-lg font-semibold md:text-2xl
+  }
+
+  .experience-title{
+    @apply font-light text-lg text-gray-600
+  }
+
+  .experience-description{
+    @apply text-sm text-gray-600
+  }
+
+  .experience-dot{
+    @apply absolute -left-3 top-10 h-5 w-5 rounded-full bg-sky-950;
   }
 }

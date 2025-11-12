@@ -1,4 +1,3 @@
-import React from 'react'
 import { BiBriefcase, BiCodeCurly, BiHome, BiMailSend, BiRightArrowAlt } from 'react-icons/bi'
 
 const HeaderLeft = () => {
