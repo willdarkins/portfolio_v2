@@ -48,4 +48,24 @@
   .experience-dot{
     @apply absolute -left-3 top-10 h-5 w-5 rounded-full bg-sky-950;
   }
+  /* project stylings */
+.project-tile{
+  @apply  h-full flex flex-col justify-between
+          text-left space-y-3 border-2 border-sky-950
+          rounded-lg px-8 py-10
+          transition-all duration-200
+          hover:scale-105 hover:shadow-lg hover:bg-sky-50
+}
+
+  .project-headers{
+    @apply text-2xl font-semibold text-sky-950 mb-1
+  }
+
+  .project-sub-headers{
+    @apply text-lg text-gray-700 mb-2
+  }
+
+  .project-body-text{
+    @apply text-sm text-gray-600 leading-relaxed line-clamp-4
+  }
 }
