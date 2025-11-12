@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { TextField, Button, Box, Snackbar, Alert } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Contact = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  const [open, setOpen] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState(null);
+  const [openSuccess, setOpenSuccess] = useState(false);
+  const [openError, setOpenError] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -13,9 +16,15 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    if (!captchaToken) {
+      setOpenError(true);
+      return;
+    }
+
+    console.log("Form submitted:", { ...formData, captchaToken });
     setFormData({ name: "", email: "", message: "" });
-    setOpen(true);
+    setCaptchaToken(null);
+    setOpenSuccess(true);
   };
 
   return (
@@ -34,7 +43,6 @@ const Contact = () => {
           gap: 3,
           width: "100%",
           maxWidth: "500px",
-          bgcolor: "transparent",
         }}
       >
         <TextField
@@ -45,9 +53,6 @@ const Contact = () => {
           fullWidth
           required
           variant="standard"
-          InputProps={{
-            disableUnderline: false,
-          }}
         />
 
         <TextField
@@ -59,9 +64,6 @@ const Contact = () => {
           fullWidth
           required
           variant="standard"
-          InputProps={{
-            disableUnderline: false,
-          }}
         />
 
         <TextField
@@ -74,9 +76,12 @@ const Contact = () => {
           fullWidth
           required
           variant="standard"
-          InputProps={{
-            disableUnderline: false,
-          }}
+        />
+
+        <ReCAPTCHA
+          sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+          onChange={(token) => setCaptchaToken(token)}
+          onExpired={() => setCaptchaToken(null)}
         />
 
         <Button
@@ -85,8 +90,8 @@ const Contact = () => {
           endIcon={<SendIcon />}
           fullWidth
           sx={{
-            bgcolor: "#0369a1", // Tailwind sky-700
-            "&:hover": { bgcolor: "#075985" }, // sky-800
+            bgcolor: "#0369a1",
+            "&:hover": { bgcolor: "#075985" },
             py: 1.5,
             mt: 1,
           }}
@@ -95,18 +100,27 @@ const Contact = () => {
         </Button>
       </Box>
 
+      {/* ✅ Success Snackbar */}
       <Snackbar
-        open={open}
+        open={openSuccess}
         autoHideDuration={4000}
-        onClose={() => setOpen(false)}
+        onClose={() => setOpenSuccess(false)}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
-        <Alert
-          onClose={() => setOpen(false)}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
+        <Alert onClose={() => setOpenSuccess(false)} severity="success" sx={{ width: "100%" }}>
           Message sent successfully!
+        </Alert>
+      </Snackbar>
+
+      {/* ❌ Error Snackbar for missing CAPTCHA */}
+      <Snackbar
+        open={openError}
+        autoHideDuration={4000}
+        onClose={() => setOpenError(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert onClose={() => setOpenError(false)} severity="warning" sx={{ width: "100%" }}>
+          Please complete the CAPTCHA before sending.
         </Alert>
       </Snackbar>
     </div>
