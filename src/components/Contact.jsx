@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { TextField, Button, Box, Snackbar, Alert } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -14,18 +14,38 @@ const Contact = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!captchaToken) {
-      setOpenError(true);
-      return;
-    }
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (!captchaToken) {
+    setOpenError(true);
+    return;
+  }
 
-    console.log("Form submitted:", { ...formData, captchaToken });
-    setFormData({ name: "", email: "", message: "" });
-    setCaptchaToken(null);
-    setOpenSuccess(true);
-  };
+  try {
+    const res = await fetch("http://localhost:5000/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...formData,
+        captchaToken,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      setOpenSuccess(true);
+      setFormData({ name: "", email: "", message: "" });
+      setCaptchaToken(null);
+    } else {
+      setOpenError(true);
+    }
+  } catch (error) {
+    console.error(error);
+    setOpenError(true);
+  }
+};
+
 
   return (
     <div
@@ -100,7 +120,6 @@ const Contact = () => {
         </Button>
       </Box>
 
-      {/* ✅ Success Snackbar */}
       <Snackbar
         open={openSuccess}
         autoHideDuration={4000}
@@ -108,11 +127,10 @@ const Contact = () => {
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert onClose={() => setOpenSuccess(false)} severity="success" sx={{ width: "100%" }}>
-          Message sent successfully!
+          Got your message 👍️ I'll reply back ASAP
         </Alert>
       </Snackbar>
 
-      {/* ❌ Error Snackbar for missing CAPTCHA */}
       <Snackbar
         open={openError}
         autoHideDuration={4000}
