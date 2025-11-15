@@ -1,3 +1,5 @@
+// /src/elements/Reveal.jsx
+
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
@@ -9,6 +11,7 @@ const Reveal = ({
   y = 40,
 }) => {
   const ref = useRef(null);
+
   const isInView = useInView(ref, {
     once: true,
     margin: "-10% 0px",

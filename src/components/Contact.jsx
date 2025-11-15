@@ -10,12 +10,6 @@ const Contact = () => {
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openError, setOpenError] = useState(false);
 
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, {
-    once: true,          // animate only first time it comes into view
-    margin: "-10% 0px",  // triggers a bit before fully centered
-  });
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
