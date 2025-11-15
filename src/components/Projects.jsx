@@ -1,8 +1,10 @@
 import projectData from "../data/projectData";
 import ProjectItem from "../elements/ProjectItem";
+import Reveal from "../elements/Reveal";
 
 const Projects = () => {
   return (
+    <Reveal>
     <div
       id="projects"
       className="min-h-screen w-full flex flex-col items-center justify-center gap-20 p-10 md:p-16 xl:px-32"
@@ -15,6 +17,7 @@ const Projects = () => {
         ))}
       </div>
     </div>
+    </Reveal>
   );
 };
 
