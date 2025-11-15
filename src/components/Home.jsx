@@ -2,9 +2,11 @@ import profileImage from '../../src/assets/profile_image.jpeg'
 import SocialIcon from "./SocialIcon";
 import { BiLogoGithub, BiLogoLinkedin } from 'react-icons/bi'
 import { SiBluesky } from 'react-icons/si'
+import Reveal from "../elements/Reveal";
 
 const Home = () => {
   return (
+    <Reveal>
     <div id= 'home' className='flex min-h-screen w-full items-center justify-center'>
 
       <div className='flex flex-col items-center justify-center gap-8 p-5 text-center'>
@@ -27,6 +29,7 @@ const Home = () => {
 </div>
       </div>
     </div>
+    </Reveal>
   )
 }
 

@@ -1,8 +1,10 @@
 import ExperienceItem from "../elements/ExperienceItem";
 import experienceData from "../data/experienceData";
+import Reveal from "../elements/Reveal";
 
 const Experience = () => {
   return (
+    <Reveal>
     <div
       id="experience"
       className="flex min-h-screen w-full flex-col items-center justify-center gap-20 p-14 md:p-20 lg:p-36"
@@ -39,6 +41,7 @@ const Experience = () => {
         </div>
       </div>
     </div>
+    </Reveal>
   );
 };
 

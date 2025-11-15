@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { TextField, Button, Box, Snackbar, Alert } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import ReCAPTCHA from "react-google-recaptcha";
+import Reveal from "../elements/Reveal";
 
 const Contact = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
@@ -9,50 +10,58 @@ const Contact = () => {
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openError, setOpenError] = useState(false);
 
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, {
+    once: true,          // animate only first time it comes into view
+    margin: "-10% 0px",  // triggers a bit before fully centered
+  });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!captchaToken) {
-    setOpenError(true);
-    return;
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!captchaToken) {
+      setOpenError(true);
+      return;
+    }
 
-  try {
-    const res = await fetch("http://localhost:5000/send", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...formData,
-        captchaToken,
-      }),
-    });
+    try {
+      const res = await fetch("http://localhost:5000/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          captchaToken,
+        }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (data.success) {
-      setOpenSuccess(true);
-      setFormData({ name: "", email: "", message: "" });
-      setCaptchaToken(null);
-    } else {
+      if (data.success) {
+        setOpenSuccess(true);
+        setFormData({ name: "", email: "", message: "" });
+        setCaptchaToken(null);
+      } else {
+        setOpenError(true);
+      }
+    } catch (error) {
+      console.error(error);
       setOpenError(true);
     }
-  } catch (error) {
-    console.error(error);
-    setOpenError(true);
-  }
-};
-
+  };
 
   return (
+    <Reveal>
     <div
       id="contact"
       className="flex min-h-screen w-full flex-col items-center justify-center gap-16 p-8 bg-white"
     >
-      <h1 className="text-center text-6xl font-light text-sky-950">Get in Touch</h1>
+      <h1 className="text-center text-6xl font-light text-sky-950">
+        Get in Touch
+      </h1>
 
       <Box
         component="form"
@@ -142,6 +151,7 @@ const handleSubmit = async (e) => {
         </Alert>
       </Snackbar>
     </div>
+    </Reveal>
   );
 };
 
