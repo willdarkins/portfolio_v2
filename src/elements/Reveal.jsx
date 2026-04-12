@@ -1,5 +1,3 @@
-// /src/elements/Reveal.jsx
-
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
