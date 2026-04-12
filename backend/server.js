@@ -32,7 +32,9 @@ app.post("/send", async (req, res) => {
     );
 
     if (!googleVerify.data.success) {
-      return res.status(400).json({ success: false, message: "Captcha failed" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Captcha failed" });
     }
   } catch (err) {
     console.error("Captcha error", err);
@@ -41,16 +43,15 @@ app.post("/send", async (req, res) => {
 
   // Send email using NodeMailer
   try {
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS,
-  },
-});
-
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS,
+      },
+    });
 
     await transporter.sendMail({
       from: `"Portfolio Contact" <${process.env.MAIL_USER}>`,

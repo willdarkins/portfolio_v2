@@ -1,18 +1,17 @@
 @import "tailwindcss";
 
-*{
+* {
 
   font-family: 'Inter';
   scroll-behavior: smooth;
 }
 
 @layer components {
-    .icon-base {
-    @apply h-10 w-10 cursor-pointer rounded-full border-2 border-transparent
-     bg-sky-950 p-2 text-white transition-all duration-200 hover:scale-110
-      hover:border-sky-950 hover:bg-white hover:text-sky-950 md:h-12 md:w-12;
+  .icon-base {
+    @apply h-10 w-10 cursor-pointer rounded-full border-2 border-transparent bg-sky-950 p-2 text-white transition-all duration-200 hover:scale-110 hover:border-sky-950 hover:bg-white hover:text-sky-950 md:h-12 md:w-12;
   }
-/* home stylings */
+
+  /* home stylings */
   .profile-image {
     @apply w-[250px] sm:w-[300px] rounded-full;
   }
@@ -29,43 +28,41 @@
     @apply max-w-[500px] text-sm text-gray-500;
   }
 
-    .nav-item-styles{
+  .nav-item-styles {
     @apply flex flex-col items-center justify-center;
   }
-/* experience stylings */
-  .experience-header{
+
+  /* experience stylings */
+  .experience-header {
     @apply text-lg font-semibold md:text-2xl
   }
 
-  .experience-title{
+  .experience-title {
     @apply font-light text-lg text-gray-600
   }
 
-  .experience-description{
+  .experience-description {
     @apply text-sm text-gray-600
   }
 
-  .experience-dot{
+  .experience-dot {
     @apply absolute -left-3 top-10 h-5 w-5 rounded-full bg-sky-950;
   }
-  /* project stylings */
-.project-tile{
-  @apply  h-full flex flex-col justify-between
-          text-left space-y-3 border-2 border-sky-950
-          rounded-lg px-8 py-10
-          transition-all duration-200
-          hover:scale-105 hover:shadow-lg hover:bg-sky-50
-}
 
-  .project-headers{
+  /* project stylings */
+  .project-tile {
+    @apply h-full flex flex-col justify-between text-left space-y-3 border-2 border-sky-950 rounded-lg px-8 py-10 transition-all duration-200 hover:scale-105 hover:shadow-lg hover:bg-sky-50
+  }
+
+  .project-headers {
     @apply text-2xl font-semibold text-sky-950 mb-1
   }
 
-  .project-sub-headers{
+  .project-sub-headers {
     @apply text-lg text-gray-700 mb-2
   }
 
-  .project-body-text{
+  .project-body-text {
     @apply text-sm text-gray-600 leading-relaxed line-clamp-4
   }
 }
