@@ -6,9 +6,9 @@ import Projects from "./components/Projects";
 
 function App() {
   return (
-    <div className="flex min-h-screen w-full subpixel-antialiased">
+    <div className="w-full subpixel-antialiased">
       <HeaderLeft />
-      <main className="flex-3">
+      <main className="w-full">
         <Home />
         <Experience />
         <Projects />
