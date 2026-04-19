@@ -1,8 +1,8 @@
-import profileImage from "../../src/assets/profile_image.jpeg";
-import SocialIcon from "./SocialIcon";
 import { BiLogoGithub, BiLogoLinkedin } from "react-icons/bi";
 import { SiBluesky } from "react-icons/si";
+import profileImage from "../../src/assets/profile_image.jpeg";
 import Reveal from "../elements/Reveal";
+import SocialIcon from "./SocialIcon";
 
 const Home = () => {
   return (
