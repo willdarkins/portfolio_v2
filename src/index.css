@@ -53,9 +53,9 @@
 
   /* ── HERO ───────────────────────────── */
   .hero-section {
-    @apply relative overflow-hidden;
+    @apply relative overflow-hidden w-full;
     background: var(--color-midnight);
-    min-height: 380px;
+    min-height: 480px;
   }
 
   .hero-name-first {
@@ -105,7 +105,7 @@
     border-radius: 18px;
     overflow: hidden;
     border: 1px solid rgba(34, 211, 238, 0.22);
-    background: var(--color-midnight-mid);
+    background: #1a1a1a;
   }
 
   .photo-frame-corner-tl {
@@ -270,32 +270,32 @@
 
   /* ── PILL NAV ───────────────────────── */
   .pill-nav {
-    @apply absolute z-50;
-    left: 14px;
+    @apply fixed z-50 hidden md:block;
+    left: 18px;
     top: 50%;
     transform: translateY(-50%);
   }
 
   .pill-nav-inner {
-    @apply flex flex-col items-center overflow-hidden cursor-pointer transition-all duration-300;
-    background: rgba(5, 8, 16, 0.9);
+    @apply flex flex-col items-center overflow-hidden cursor-pointer;
+    background: rgba(5, 8, 16, 0.92);
     border-radius: 40px;
-    border: 0.5px solid rgba(255, 255, 255, 0.07);
-    width: 16px;
-    padding: 12px 0;
-    gap: 10px;
+    border: 1px solid rgba(34, 211, 238, 0.25);
+    width: 40px;
+    padding: 22px 0;
+    gap: 14px;
   }
 
   .pill-nav-inner.expanded {
-    width: 116px;
-    padding: 12px;
+    width: 140px;
+    padding: 16px 14px;
   }
 
   .pill-nav-dot {
     @apply rounded-full transition-colors duration-200 shrink-0;
-    width: 4px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.15);
+    width: 10px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.2);
   }
 
   .pill-nav-dot.active {
