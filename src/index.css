@@ -363,6 +363,22 @@ button {
   gap: 36px;
 }
 
+.content-main {
+  min-width: 0;
+}
+
+.content-sidebar {
+  min-width: 0;
+}
+
+.blog-coming-soon {
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--color-slate-400);
+  line-height: 1.6;
+  padding: 4px 0 16px;
+}
+
 .sec-head {
   display: flex;
   align-items: center;
