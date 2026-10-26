@@ -92,6 +92,20 @@ npm run deploy    # opennext build + deploy to Cloudflare Workers
 
 ---
 
+## Release process
+
+**`main` is production.** Once Workers Builds is connected, every merge to `main` deploys willdarkins.com. Shipping means merging a PR, never `npm run deploy` from a laptop.
+
+- **When:** one PR per phase, or per meaningful feature within a phase. Small fixes can go anytime as small PRs. Never merge with a failing build, lint or preview.
+- **Branch protection on `main`:** require a PR and a passing build check; block force-pushes and deletion.
+- **Every PR:** a description covering what changed, why, how it was tested (build / lint / preview), and the preview URL. Claude Code drafts it from its report.
+- **Preview builds:** Workers Builds builds non-production branches, so each PR gets a preview URL to check before merging.
+- **Tags + GitHub Releases per phase:** `v3.0.0` = Phase 0 (live hello world), `v3.1.0` = Phase 1, and so on. (`v2-vite-final` = the old Vite site.) Each Release gets short notes.
+- **Commit prefixes:** `feat:`, `fix:`, `chore:`, `docs:`.
+- **Trace:** Cloudflare's deployment history maps every deploy to a commit; this file's Session log is the plain-English record. The process itself feeds the Phase 5 "how I ship my own site" write-up.
+
+---
+
 ## Design system
 
 **Colors** — navy `#16305a`, navy-deep `#0f2444`, gold `#e9c46a`, ink `#1a1a1a`, ink-soft `#3d4149`, paper `#f7f5f0`, paper-warm `#efece4`, line `#d9d5cc`, muted text `#6e695f` (replaces `#8a857a` for small grey text — passes 4.5:1). Lane/category colors — DevSecOps `#16305a`, Governance & Risk `#6a5a2c`, Platforms & AI `#4a5240`, Orioles `#a8451a`.
