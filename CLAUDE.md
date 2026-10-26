@@ -2,6 +2,8 @@
 
 **How to use this doc:** This is the working memory for the portfolio build across chats and Claude Code sessions. Read it first at the start of any session. Update the **Current Status**, **Next Actions**, and **Session Log** at the end of any session that changes something. Keep it short and current — stale state is worse than none.
 
+Next.js agent docs: @AGENTS.md
+
 **Last updated:** October 26, 2026 · PR #14 (Next.js Phase 0 scaffold) merged to main. Clean install + build + local Worker preview pass on Next 16 (branch `phase0-build-fixes`). Not yet deployed.
 
 ---
