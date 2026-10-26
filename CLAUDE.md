@@ -2,7 +2,7 @@
 
 **How to use this doc:** This is the working memory for the portfolio build across chats and Claude Code sessions. Read it first at the start of any session. Update the **Current Status**, **Next Actions**, and **Session Log** at the end of any session that changes something. Keep it short and current — stale state is worse than none.
 
-**Last updated:** October 26, 2026 · PR #14 (Next.js Phase 0 scaffold) merged to main. Not yet cleanly installed, built or deployed.
+**Last updated:** October 26, 2026 · PR #14 (Next.js Phase 0 scaffold) merged to main. Clean install + build + local Worker preview pass on Next 16 (branch `phase0-build-fixes`). Not yet deployed.
 
 ---
 
@@ -33,6 +33,12 @@
 - `lib/posts.ts` + `content/posts/` still use the blog schema; convert to case studies under `content/work/`. Phase 3.
 - `README.md` still describes the blog. Update at the end of Phase 0.
 - `claude/homepage-reference.html` and the Design canvas live in the claude.ai project, not the repo.
+- Deferred major upgrades: ~~Next 16 (removes `next lint`; needs OpenNext support)~~ ✅ done Oct 26 (forced by OpenNext's support-window check after Next 15 EOL'd Oct 21), TypeScript 7, zod 4, next-mdx-remote 6, ESLint 10. Do these deliberately, after launch, one at a time.
+- Remaining audit items need zod 4 / next-mdx-remote 6; MDX is first-party only, so the next-mdx-remote advisory doesn't apply yet.
+- `public/_headers` security headers (`X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`) apply only to static assets, not to Worker-rendered HTML pages (verified in `npm run preview`). Move them to `headers()` in `next.config.ts` or middleware. Before launch / Phase 5.
+- `wrangler.jsonc` `compatibility_date` is `2025-03-25`; wrangler warns it's stale. Bump at the deploy step.
+- `next dev` (Next 16) generates an `AGENTS.md`; not yet committed or ignored — decide whether to keep it.
+- `@eslint/eslintrc` devDependency is unused since the flat-config switch; remove when convenient.
 
 ---
 
@@ -71,8 +77,8 @@ README.md / DEPLOY.md
 
 ```bash
 npm run dev       # next dev — http://localhost:3000
-npm run build     # next build (strict: lint/type errors fail the build)
-npm run lint      # next lint
+npm run build     # next build (strict: type errors fail the build; Next 16 doesn't lint here)
+npm run lint      # eslint . (flat config in eslint.config.mjs)
 npm run preview   # opennext build + preview the real Worker locally
 npm run deploy    # opennext build + deploy to Cloudflare Workers
 ```
@@ -108,7 +114,7 @@ Home · Work (case-study index + one page per case study) · About (bio + path) 
 
 **Now (Claude Code, prompted step by step):**
 1. ✅ Replace stale `CLAUDE.md` with this doc (Oct 26).
-2. Clean reinstall (remove leftover build folders, `npm ci`/`npm install`), then `npm run build` and `npm run dev`; fix whatever the hand-authored scaffold gets wrong.
+2. ✅ Clean reinstall (remove leftover build folders, `npm ci`/`npm install`), then `npm run build` and `npm run dev`; fix whatever the hand-authored scaffold gets wrong (Oct 26, branch `phase0-build-fixes`).
 3. Follow `DEPLOY.md` → live "hello world" at willdarkins.com. Closes Phase 0.
 
 **Will:**
@@ -133,6 +139,7 @@ Home · Work (case-study index + one page per case study) · About (bio + path) 
 
 ## Session log
 
+- **2026-10-26 (Phase 0 build)** — Clean `npm ci`; scaffold built and linted with no code fixes. Next 15 EOL blocked OpenNext, so upgraded to Next 16.4.3 (`eslint .` flat config) + in-range `npm audit fix` (OpenNext 1.20.13, wrangler 4.153.0). Build, lint, dev and `npm run preview` all pass.
 - **2026-10-26 (repo sync)** — PR #14 merged; local main synced at `2fb376f`; `nextjs-rebuild` gone. Found leftover Jul 20 build folders locally (never deployed). Replaced stale `CLAUDE.md` with this doc. Next: clean install/build, then deploy.
 - **2026-10-26 (repositioning + redesign)** — Role has shifted from QA into security tooling, GRC and platform ownership. Repositioned site around security/governance/systems; QA moved to background. Decided writing lives on Substack (RSS-fed cards, link out, no iframe). Redesigned homepage on a Design canvas, same aesthetic: new hero, What I Do lanes, 4 case studies with outcomes, "how I got here" path, newsletter cards + subscribe band. Tagline → "Security · Systems · Fatherhood · Sports". Employer kept unnamed. Approved.
 - **2026-07-20 (Phase 0 build)** — Tailwind v4, custom loader + Zod, OpenNext on Workers, apex domain. Hand-authored scaffold (no npm in sandbox). git init + 2 commits. Pending local install/build/deploy.
