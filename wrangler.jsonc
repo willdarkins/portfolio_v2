@@ -1,0 +1,20 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "willdarkins-com",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2025-03-25",
+  // nodejs_compat is required by @opennextjs/cloudflare.
+  // global_fetch_strictly_public makes internal fetch() calls behave like public ones.
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true
+  }
+  // As the site grows you may want to add, per the OpenNext docs:
+  //   "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "willdarkins-com" }]
+  //   an R2 bucket for the incremental cache (see open-next.config.ts)
+  //   "images": { "binding": "IMAGES" }  // only if you use next/image optimization
+}

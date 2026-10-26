@@ -1,0 +1,77 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/*
+  Design tokens — the single source of truth, mirrored from
+  claude/homepage-reference.html. Declaring them inside @theme makes Tailwind
+  generate matching utilities automatically:
+    --color-navy       -> bg-navy / text-navy / border-navy ...
+    --font-serif       -> font-serif
+  The font tokens point at the CSS variables injected by next/font in layout.tsx.
+*/
+@theme {
+  /* Brand */
+  --color-navy: #16305a;
+  --color-navy-deep: #0f2444;
+  --color-gold: #e9c46a;
+
+  /* Ink + paper */
+  --color-ink: #1a1a1a;
+  --color-ink-soft: #3d4149;
+  --color-paper: #f7f5f0;
+  --color-paper-warm: #efece4;
+  --color-line: #d9d5cc;
+
+  /* Category kicker colors (used by the blog later) */
+  --color-cyber: #16305a;
+  --color-parenting: #6a5a2c;
+  --color-orioles: #a8451a;
+  --color-observations: #4a5240;
+
+  /* Type — the vars come from next/font (see app/layout.tsx) */
+  --font-serif: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-hand: var(--font-caveat), "Comic Sans MS", cursive;
+}
+
+/* Base document styling built on the tokens above. */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+/*
+  Hand-drawn nav underline that draws in on hover — a Phase 0 proof of the
+  "ink layer" interaction from the design. It MUST NOT animate for visitors who
+  ask for reduced motion: there, the underline is simply shown at rest.
+*/
+.ink-underline path {
+  fill: none;
+  stroke: var(--color-navy);
+  stroke-width: 3.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 240;
+  stroke-dashoffset: 240;
+  transition: stroke-dashoffset 0.42s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.ink-link:hover .ink-underline path,
+.ink-link:focus-visible .ink-underline path {
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ink-underline path {
+    transition: none;
+    /* Show the stroke at rest instead of animating it in. */
+    stroke-dashoffset: 0;
+  }
+}
