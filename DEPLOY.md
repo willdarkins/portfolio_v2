@@ -1,135 +1,82 @@
 # Deploy guide — GitHub → Cloudflare Workers → willdarkins.com
 
-This gets you from the repo on your machine to a live "hello world" at
-**willdarkins.com** (apex), with `www` redirecting to it. The site deploys to
-**Cloudflare Workers** using the **OpenNext** adapter (`@opennextjs/cloudflare`) —
-Cloudflare's current recommended way to run Next.js, replacing the older
-`@cloudflare/next-on-pages` (now in maintenance mode).
-
-There are two moments: (1) a one-time **CLI deploy** to confirm the build works
-and see it live fast, then (2) wiring up **git-push-to-deploy** so every push to
-`main` ships automatically. Do both — the CLI deploy is the fastest way to catch
-any first-time issue before CI is involved.
+The site runs on **Cloudflare Workers** via the **OpenNext** adapter
+(`@opennextjs/cloudflare`). Code lives in **`willdarkins/portfolio_v2`** (already
+exists; push over HTTPS with `gh`). **Workers Builds** deploys every merge to
+`main` and builds a preview for every other branch. Shipping = merging a PR —
+see "Release process" in `CLAUDE.md`.
 
 ---
 
-## Prerequisites
+## Part 1 — Verify locally
 
-1. **Node 20+** and npm installed locally (`node -v`).
-2. A **GitHub** account.
-3. Your **Cloudflare** account, with **willdarkins.com already added as a zone**
-   (you said it's purchased and managed in Cloudflare — good).
-4. Install deps and confirm it runs locally:
-   ```bash
-   npm install
-   npm run dev        # open http://localhost:3000 — you should see the placeholder
-   ```
+```bash
+npm ci
+npm run build && npm run lint
+npm run preview      # OpenNext build + local Worker at http://localhost:8787 (no login needed)
+```
+
+If the placeholder renders in preview, the Worker build is good.
 
 ---
 
-## Part 1 — Verify the build and do a first CLI deploy
+## Part 2 — Connect Workers Builds
 
-This proves the OpenNext build works before you involve GitHub/CI.
-
-1. **Log in to Cloudflare from the CLI** (opens a browser to authorize Wrangler):
-   ```bash
-   npx wrangler login
-   ```
-2. **Build + preview the Worker locally** (optional but recommended — this runs
-   the real Workers runtime, not just `next dev`):
-   ```bash
-   npm run preview
-   ```
-   Visit the URL it prints. If the placeholder page renders, the OpenNext build is good.
-3. **Deploy:**
-   ```bash
-   npm run deploy
-   ```
-   Wrangler creates a Worker named **`willdarkins-com`** (from `wrangler.jsonc`)
-   and prints a live URL like `https://willdarkins-com.<your-subdomain>.workers.dev`.
-   Open it — that's your hello world. 🎉
-
-> If `wrangler login` can't open a browser (e.g. remote shell), run
-> `npx wrangler login` on your local desktop instead, or create an API token and
-> set `CLOUDFLARE_API_TOKEN`.
-
----
-
-## Part 2 — Put the code on GitHub
-
-1. Create a new **empty** repo on GitHub named `willdarkins-com` (no README/gitignore —
-   this repo already has them).
-2. From the project folder:
-   ```bash
-   git remote add origin git@github.com:<your-username>/willdarkins-com.git
-   # or HTTPS: https://github.com/<your-username>/willdarkins-com.git
-   git branch -M main
-   git push -u origin main
-   ```
-   (The repo is already `git init`'d with an initial commit.)
-
----
-
-## Part 3 — Git-push-to-deploy with Workers Builds
-
-This connects the GitHub repo to your Worker so every push to `main` builds and
-deploys automatically.
-
-1. In the **Cloudflare dashboard** → **Workers & Pages** → open your
-   **`willdarkins-com`** Worker (created in Part 1).
-2. Go to **Settings → Build** (a.k.a. *Builds* / *CI/CD*) → **Connect** your
-   GitHub account and select the **`willdarkins-com`** repository, branch `main`.
-3. Set the build configuration:
+1. Cloudflare dashboard → **Workers & Pages** → **Create** → **Import a repository**
+   → connect GitHub → select **`willdarkins/portfolio_v2`**.
+2. **Project name:** `willdarkins-com` — must match `name` in `wrangler.jsonc`.
+3. Build settings:
    - **Build command:** `npx opennextjs-cloudflare build`
-   - **Deploy command:** `npx wrangler deploy`
-   - **Root directory:** `/` (leave default)
-4. Save. Trigger a build (push a commit, or use **Retry/Run build**). When it
-   finishes, your `*.workers.dev` URL serves the latest `main`.
-
-> Prefer GitHub Actions instead of Workers Builds? You can, but Workers Builds is
-> the least-moving-parts option and needs no secrets in the repo. If you ever do
-> use Actions, deploy with `cloudflare/wrangler-action` and a scoped API token.
+   - **Deploy command:** `npx opennextjs-cloudflare deploy`
+   - **Non-production branch deploy command:** `npx opennextjs-cloudflare upload`
+   - **Root directory:** `/`
+4. **Settings → Build → Branch control:** production branch **`main`**; enable
+   **builds for non-production branches**. Each PR branch then gets a preview URL.
+5. Save and deploy. The first build serves the site at
+   `https://willdarkins-com.<your-subdomain>.workers.dev`.
 
 ---
 
-## Part 4 — Point willdarkins.com at the Worker (apex, with www → apex)
+## Part 3 — Custom domain (apex, www → apex)
 
-Because the domain is already in Cloudflare, this is a few clicks — no manual DNS
-records or certificates needed.
+willdarkins.com is already a zone in this Cloudflare account.
 
-1. In the dashboard → **Workers & Pages** → **`willdarkins-com`** → **Settings →
-   Domains & Routes** → **Add** → **Custom domain**.
-2. Enter **`willdarkins.com`** and add it. Cloudflare provisions the DNS record
-   and TLS certificate automatically. In a minute or two,
-   `https://willdarkins.com` serves the site.
-3. **Redirect `www` → apex.** Go to the **willdarkins.com** zone → **Rules →
-   Redirect Rules → Create rule**:
-   - **Name:** `www to apex`
-   - **When incoming requests match:** *Hostname* **equals** `www.willdarkins.com`
-   - **Then:** *Static redirect* → URL `https://willdarkins.com` +
-     preserve path/query, status **301 (Permanent)**.
-   - (If Cloudflare asks for the source expression in Expression Editor:
-     `http.host eq "www.willdarkins.com"`.)
-   - You also need a DNS record for `www` so the redirect has something to catch:
-     in the zone's **DNS** tab add a **CNAME** `www` → `willdarkins.com`, **Proxied**
-     (orange cloud). The redirect rule then sends it to the apex.
+1. Worker **`willdarkins-com`** → **Settings → Domains & Routes** → **Add →
+   Custom domain** → `willdarkins.com`. Cloudflare creates the DNS record and TLS
+   certificate.
+2. **DNS** tab of the zone: add **CNAME** `www` → `willdarkins.com`, **Proxied**.
+3. **Rules → Redirect Rules → Create rule** "www to apex":
+   - When: `http.host eq "www.willdarkins.com"`
+   - Then: static redirect to `https://willdarkins.com`, **preserve path and
+     query**, status **301**.
 
-That's it — `willdarkins.com` is live, `www.willdarkins.com` 301s to it, and every
-push to `main` redeploys.
+---
+
+## Part 4 — Protect `main`
+
+GitHub → `portfolio_v2` → **Settings → Rules → Rulesets** (or **Branches**) → rule
+for `main`:
+
+- Require a pull request before merging.
+- Require status checks to pass: the **Workers Builds** check for
+  `willdarkins-com` (it appears in the list after the first build has run).
+- Block force pushes; restrict deletions.
 
 ---
 
 ## Troubleshooting
 
-- **Fonts fail during build:** `next/font` fetches Newsreader/Inter/Caveat at build
-  time. Workers Builds has network access, so this works in CI and locally. Behind a
-  strict corporate proxy it can fail — deploy from a normal network.
-- **`nodejs_compat` error at deploy:** ensure `wrangler.jsonc` keeps
-  `"compatibility_flags": ["nodejs_compat", ...]` and a `compatibility_date` of at
-  least `2024-09-23`.
-- **Build can't find `.open-next/worker.js`:** the deploy command must run *after*
-  the build command. In Workers Builds that's Build = `npx opennextjs-cloudflare build`,
-  Deploy = `npx wrangler deploy`. Locally, `npm run deploy` does both in order.
-- **Later, when you add ISR / revalidation:** wire an R2 bucket for the incremental
-  cache in `open-next.config.ts` and add the `WORKER_SELF_REFERENCE` service binding
-  in `wrangler.jsonc` (both are noted inline in those files).
+- **"Next.js version … is not supported":** OpenNext refuses Next majors past
+  their 2-year support window. Upgrade Next rather than using
+  `--dangerouslyUseUnsupportedNextVersion`.
+- **Build-time Node errors:** the project is developed on Node 24; wrangler needs
+  ≥22. If Workers Builds uses an older Node, set the build variable
+  `NODE_VERSION=24`.
+- **`nodejs_compat` error:** keep `"compatibility_flags": ["nodejs_compat", ...]`
+  in `wrangler.jsonc`.
+- **Fonts fail during build:** `next/font` downloads Newsreader/Inter/Caveat at
+  build time; it needs normal network access.
+- **Emergency CLI deploy** (bypasses review — avoid): `npx wrangler login`, then
+  `npm run deploy`.
+- **Later, ISR / revalidation:** switch `open-next.config.ts` to an R2 incremental
+  cache and add the `WORKER_SELF_REFERENCE` service binding (noted in both files).
