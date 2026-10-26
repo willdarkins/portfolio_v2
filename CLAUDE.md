@@ -4,7 +4,7 @@
 
 Next.js agent docs: @AGENTS.md
 
-**Last updated:** October 26, 2026 · PR #14 (Next.js Phase 0 scaffold) merged to main. Clean install + build + local Worker preview pass on Next 16 (branch `phase0-build-fixes`). Not yet deployed.
+**Last updated:** October 26, 2026 · PR #14 (Next.js Phase 0 scaffold) merged to main. Clean install + build + local Worker preview pass on Next 16, with pre-deploy hardening (branch `phase0-build-fixes`, PR open). Not yet deployed.
 
 ---
 
@@ -30,18 +30,13 @@ Next.js agent docs: @AGENTS.md
 **Working agreement:** Will's planning chat writes copy-paste prompts; Will runs them in Claude Code (CLI) and pastes results back. Claude Code reports before anything risky and waits for an OK. Never force-push, `reset --hard`, or delete branches.
 
 **Known gaps (found Oct 26, fix in the phase noted):**
-- `DEPLOY.md` is stale: it says to create a new repo `willdarkins-com` over SSH and connect that in Workers Builds. The real repo is `willdarkins/portfolio_v2`. Fix at the deploy step. (Worker name `willdarkins-com` in `wrangler.jsonc` is correct.)
 - `globals.css` tokens still use blog names (`cyber`, `parenting`, `orioles`, `observations`); rename to lane names and add muted `#6e695f`. Phase 1.
 - `lib/posts.ts` + `content/posts/` still use the blog schema; convert to case studies under `content/work/`. Phase 3.
 - `README.md` still describes the blog. Update at the end of Phase 0.
 - `claude/homepage-reference.html` and the Design canvas live in the claude.ai project, not the repo.
 - Deferred major upgrades: ~~Next 16 (removes `next lint`; needs OpenNext support)~~ ✅ done Oct 26 (forced by OpenNext's support-window check after Next 15 EOL'd Oct 21), TypeScript 7, zod 4, next-mdx-remote 6, ESLint 10. Do these deliberately, after launch, one at a time.
 - Remaining audit items need zod 4 / next-mdx-remote 6; MDX is first-party only, so the next-mdx-remote advisory doesn't apply yet.
-- `public/_headers` security headers (`X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`) apply only to static assets, not to Worker-rendered HTML pages (verified in `npm run preview`). Move them to `headers()` in `next.config.ts` or middleware. Before launch / Phase 5.
 - Remove noindex when the real homepage ships (Phase 2).
-- `wrangler.jsonc` `compatibility_date` is `2025-03-25`; wrangler warns it's stale. Bump at the deploy step.
-- `next dev` (Next 16) generates an `AGENTS.md`; not yet committed or ignored — decide whether to keep it.
-- `@eslint/eslintrc` devDependency is unused since the flat-config switch; remove when convenient.
 
 ---
 
@@ -156,6 +151,7 @@ Home · Work (case-study index + one page per case study) · About (bio + path) 
 
 ## Session log
 
+- **2026-10-26 (pre-deploy hardening)** — Committed Next's `AGENTS.md`; moved security headers from `_headers` into `next.config.ts` `headers()` (verified on pages in preview); noindex until launch; `compatibility_date` → 2026-10-26; dropped `@eslint/eslintrc`; rewrote `DEPLOY.md` for `portfolio_v2` + Workers Builds; added Release process. PR opened, not merged.
 - **2026-10-26 (Phase 0 build)** — Clean `npm ci`; scaffold built and linted with no code fixes. Next 15 EOL blocked OpenNext, so upgraded to Next 16.4.3 (`eslint .` flat config) + in-range `npm audit fix` (OpenNext 1.20.13, wrangler 4.153.0). Build, lint, dev and `npm run preview` all pass.
 - **2026-10-26 (repo sync)** — PR #14 merged; local main synced at `2fb376f`; `nextjs-rebuild` gone. Found leftover Jul 20 build folders locally (never deployed). Replaced stale `CLAUDE.md` with this doc. Next: clean install/build, then deploy.
 - **2026-10-26 (repositioning + redesign)** — Role has shifted from QA into security tooling, GRC and platform ownership. Repositioned site around security/governance/systems; QA moved to background. Decided writing lives on Substack (RSS-fed cards, link out, no iframe). Redesigned homepage on a Design canvas, same aesthetic: new hero, What I Do lanes, 4 case studies with outcomes, "how I got here" path, newsletter cards + subscribe band. Tagline → "Security · Systems · Fatherhood · Sports". Employer kept unnamed. Approved.
