@@ -2,7 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "willdarkins-com",
   "main": ".open-next/worker.js",
-  "compatibility_date": "2025-03-25",
+  "compatibility_date": "2026-10-26",
   // nodejs_compat is required by @opennextjs/cloudflare.
   // global_fetch_strictly_public makes internal fetch() calls behave like public ones.
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
