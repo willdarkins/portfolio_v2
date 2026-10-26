@@ -38,6 +38,7 @@ Next.js agent docs: @AGENTS.md
 - Deferred major upgrades: ~~Next 16 (removes `next lint`; needs OpenNext support)~~ ✅ done Oct 26 (forced by OpenNext's support-window check after Next 15 EOL'd Oct 21), TypeScript 7, zod 4, next-mdx-remote 6, ESLint 10. Do these deliberately, after launch, one at a time.
 - Remaining audit items need zod 4 / next-mdx-remote 6; MDX is first-party only, so the next-mdx-remote advisory doesn't apply yet.
 - `public/_headers` security headers (`X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`) apply only to static assets, not to Worker-rendered HTML pages (verified in `npm run preview`). Move them to `headers()` in `next.config.ts` or middleware. Before launch / Phase 5.
+- Remove noindex when the real homepage ships (Phase 2).
 - `wrangler.jsonc` `compatibility_date` is `2025-03-25`; wrangler warns it's stale. Bump at the deploy step.
 - `next dev` (Next 16) generates an `AGENTS.md`; not yet committed or ignored — decide whether to keep it.
 - `@eslint/eslintrc` devDependency is unused since the flat-config switch; remove when convenient.
