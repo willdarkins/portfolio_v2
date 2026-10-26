@@ -1,0 +1,9 @@
+# Long-cache the immutable Next.js build assets.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# A few sensible baseline security headers. Full CSP + hardening is Phase 5.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN

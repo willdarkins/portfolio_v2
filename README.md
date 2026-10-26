@@ -1,16 +1,82 @@
-# React + Vite
+# willdarkins.com
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio + editorial blog for Will Darkins — a QA engineer moving into
+cybersecurity. Built as a credential in its own right: clean, fast, typed, and
+security-conscious.
 
-Currently, two official plugins are available:
+**Stack:** Next.js (App Router) · TypeScript · Tailwind CSS v4 · MDX blog posts
+with a typed (Zod-validated) content layer · deployed to Cloudflare Workers via
+the OpenNext adapter (`@opennextjs/cloudflare`).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+> **Status: Phase 0** — scaffold, design tokens, content layer, and a placeholder
+> homepage that proves the system loads. Real pages/design come in later phases.
+> See the project plan and `state.md` in the Claude project for the roadmap.
 
-## React Compiler
+## Getting started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install
+npm run dev          # http://localhost:3000
+```
 
-## Expanding the ESLint configuration
+## Project layout
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```
+app/
+  layout.tsx         # fonts (Newsreader/Inter/Caveat) + <html> font variables + metadata
+  page.tsx           # Phase 0 placeholder homepage (proves tokens/fonts/content layer)
+  globals.css        # Tailwind v4 + design tokens in @theme + ink-underline styles
+components/
+  MDXContent.tsx     # renders an MDX body as RSC (next-mdx-remote/rsc + remark-gfm)
+content/
+  posts/*.mdx        # blog posts — typed frontmatter (title/date/category/description/hero/draft)
+lib/
+  posts.ts           # the typed content layer: gray-matter + Zod schema + loaders
+public/
+  _headers           # long-cache for /_next/static + baseline security headers
+wrangler.jsonc       # Cloudflare Worker config (name, assets, nodejs_compat)
+open-next.config.ts  # OpenNext adapter config
+```
+
+## Design tokens
+
+Colors and fonts live once, in `app/globals.css` under `@theme`, mirrored from the
+approved design in the Claude project. Tailwind generates utilities from them:
+`bg-navy`, `text-gold`, `border-line`, `font-serif`, `font-hand`, etc. Change a
+token there and it updates everywhere.
+
+| Token | Value | | Token | Value |
+|---|---|---|---|---|
+| navy | `#16305a` | | paper | `#f7f5f0` |
+| navy-deep | `#0f2444` | | paper-warm | `#efece4` |
+| gold | `#e9c46a` | | line | `#d9d5cc` |
+| ink | `#1a1a1a` | | ink-soft | `#3d4149` |
+
+## Writing a post
+
+Add a file to `content/posts/`, e.g. `my-post.mdx`:
+
+```mdx
+---
+title: "My Post Title"
+date: "2026-07-20"
+category: "Cybersecurity"   # Cybersecurity | Parenting | Observations | Orioles
+description: "One-line summary shown in listings."
+draft: false                 # true = hidden in production, visible in `next dev`
+---
+
+Body goes here. **Markdown** and MDX components both work.
+```
+
+The frontmatter is validated by Zod at build time — a typo in `category` or a
+missing `title` fails the build instead of shipping broken.
+
+## Deploying
+
+See [`DEPLOY.md`](./DEPLOY.md) for the full GitHub → Cloudflare Workers → custom
+domain walkthrough.
+
+```bash
+npm run preview   # build with OpenNext and preview the Worker locally
+npm run deploy    # build + deploy to Cloudflare Workers
+```
