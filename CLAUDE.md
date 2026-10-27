@@ -2,7 +2,9 @@
 
 **How to use this doc:** This is the working memory for the portfolio build across chats and Claude Code sessions. Read it first at the start of any session. Update the **Current Status**, **Next Actions**, and **Session Log** at the end of any session that changes something. Keep it short and current — stale state is worse than none.
 
-**Last updated:** October 26, 2026 · PR #14 (Next.js Phase 0 scaffold) merged to main. Not yet cleanly installed, built or deployed.
+Next.js agent docs: @AGENTS.md
+
+**Last updated:** October 26, 2026 · PR #14 (Next.js Phase 0 scaffold) merged to main. Clean install + build + local Worker preview pass on Next 16, with pre-deploy hardening (branch `phase0-build-fixes`, PR open). Not yet deployed.
 
 ---
 
@@ -12,14 +14,14 @@
 
 **New approved homepage:** the "Homepage Redesign" canvas artifact (claude.ai Design canvas, `project/Main.dc.html`). It supersedes the copy and structure of `claude/homepage-reference.html`; the visual system (palette, type, ink layer, portrait) is unchanged.
 
-**Phase 0 scaffold is merged** (Next.js + tokens + fonts + MDX layer + OpenNext/Cloudflare wiring). It was hand-authored without `npm install`/`next build`. Leftover `node_modules/`, `.next/`, `.open-next/` and `.wrangler/` folders dated Jul 20 exist on Will's machine, so an install and OpenNext build ran once, but nothing was deployed. Treat those as untrusted: start from a clean reinstall.
+**Phase 0 scaffold builds clean on Next 16** (Next.js + tokens + fonts + MDX layer + OpenNext/Cloudflare wiring). Clean `npm ci`, build, lint, dev and local Worker preview all pass; pre-deploy hardening (security headers, noindex) is on PR #15. Nothing is live at willdarkins.com yet: the Phase 0 deploy goes straight to the apex domain, with `noindex` until real content ships in Phase 2.
 
 ---
 
 ## Repo
 
 - **GitHub:** `willdarkins/portfolio_v2`. Local clone: `~/Documents/willdarkins-com/willdarkins` (Linux, zsh).
-- **main** includes the Next.js scaffold via merged **PR #14** (main at `2fb376f` as of Oct 26). The `nextjs-rebuild` branch is gone (merged).
+- **main** is at `0cdc500` (Next.js scaffold via merged **PR #14** + this `CLAUDE.md`). **PR #15** (`phase0-build-fixes`: Next 16, audit fixes, pre-deploy hardening) is open. The `nextjs-rebuild` branch is gone (merged).
 - **Old Vite site** is preserved under tag **`v2-vite-final`**.
 - **Toolchain:** Node v24.15.0, npm 11.12.1.
 - **Pushing over HTTPS:** run `gh auth setup-git` once, or push with `git -c credential.helper='!gh auth git-credential' push origin main`.
@@ -28,11 +30,13 @@
 **Working agreement:** Will's planning chat writes copy-paste prompts; Will runs them in Claude Code (CLI) and pastes results back. Claude Code reports before anything risky and waits for an OK. Never force-push, `reset --hard`, or delete branches.
 
 **Known gaps (found Oct 26, fix in the phase noted):**
-- `DEPLOY.md` is stale: it says to create a new repo `willdarkins-com` over SSH and connect that in Workers Builds. The real repo is `willdarkins/portfolio_v2`. Fix at the deploy step. (Worker name `willdarkins-com` in `wrangler.jsonc` is correct.)
 - `globals.css` tokens still use blog names (`cyber`, `parenting`, `orioles`, `observations`); rename to lane names and add muted `#6e695f`. Phase 1.
 - `lib/posts.ts` + `content/posts/` still use the blog schema; convert to case studies under `content/work/`. Phase 3.
 - `README.md` still describes the blog. Update at the end of Phase 0.
 - `claude/homepage-reference.html` and the Design canvas live in the claude.ai project, not the repo.
+- Deferred major upgrades: ~~Next 16 (removes `next lint`; needs OpenNext support)~~ ✅ done Oct 26 (forced by OpenNext's support-window check after Next 15 EOL'd Oct 21), TypeScript 7, zod 4, next-mdx-remote 6, ESLint 10. Do these deliberately, after launch, one at a time.
+- Remaining audit items need zod 4 / next-mdx-remote 6; MDX is first-party only, so the next-mdx-remote advisory doesn't apply yet.
+- Remove noindex when the real homepage ships (Phase 2).
 
 ---
 
@@ -52,16 +56,18 @@
 ## What's in the repo (Phase 0)
 
 ```
-app/layout.tsx      fonts (Newsreader/Inter/Caveat via next/font) + <html> font vars + metadata
+app/layout.tsx      fonts (Newsreader/Inter/Caveat via next/font) + <html> font vars + metadata (noindex until Phase 2)
 app/page.tsx        placeholder homepage — proves tokens + all 3 fonts + content layer load
 app/globals.css     Tailwind v4 + design tokens in @theme + reduced-motion-safe ink-underline
 components/MDXContent.tsx   renders MDX body as RSC (next-mdx-remote/rsc + remark-gfm)
 content/posts/hello-world.mdx   sample post — repurpose dir to content/work/ for case studies
 lib/posts.ts        typed content layer: Zod schema + loaders — adapt schema for case studies
-public/_headers     long-cache for /_next/static + baseline security headers
+public/_headers     long-cache for /_next/static (security headers live in next.config.ts)
 wrangler.jsonc      Worker config (name willdarkins-com, assets, nodejs_compat)
 open-next.config.ts OpenNext adapter config
-next.config.ts      initOpenNextCloudflareForDev()
+next.config.ts      initOpenNextCloudflareForDev() + headers() (security headers on all routes)
+eslint.config.mjs   flat ESLint config (eslint-config-next 16)
+AGENTS.md           Next.js agent docs pointer (generated by next dev)
 README.md / DEPLOY.md
 ```
 
@@ -71,8 +77,8 @@ README.md / DEPLOY.md
 
 ```bash
 npm run dev       # next dev — http://localhost:3000
-npm run build     # next build (strict: lint/type errors fail the build)
-npm run lint      # next lint
+npm run build     # next build (strict: type errors fail the build; Next 16 doesn't lint here)
+npm run lint      # eslint . (flat config in eslint.config.mjs)
 npm run preview   # opennext build + preview the real Worker locally
 npm run deploy    # opennext build + deploy to Cloudflare Workers
 ```
@@ -80,6 +86,20 @@ npm run deploy    # opennext build + deploy to Cloudflare Workers
 - **Import alias:** `@/*` → repo root (e.g. `import { getAllPosts } from "@/lib/posts"`).
 - **Design tokens — the one rule:** all tokens live once, in `app/globals.css` under `@theme`. Use the generated utilities (`bg-navy`, `text-gold`, `font-serif`…); never hardcode hex values or add ad-hoc CSS. Need a new color or font? Add the token to `@theme`.
 - **Scope:** do not change files unless asked.
+
+---
+
+## Release process
+
+**`main` is production.** Once Workers Builds is connected, every merge to `main` deploys willdarkins.com. Shipping means merging a PR, never `npm run deploy` from a laptop.
+
+- **When:** one PR per phase, or per meaningful feature within a phase. Small fixes can go anytime as small PRs. Never merge with a failing build, lint or preview.
+- **Branch protection on `main`:** require a PR and a passing build check; block force-pushes and deletion.
+- **Every PR:** a description covering what changed, why, how it was tested (build / lint / preview), and the preview URL. Claude Code drafts it from its report.
+- **Preview builds:** Workers Builds builds non-production branches, so each PR gets a preview URL to check before merging.
+- **Tags + GitHub Releases per phase:** `v3.0.0` = Phase 0 (live hello world), `v3.1.0` = Phase 1, and so on. (`v2-vite-final` = the old Vite site.) Each Release gets short notes.
+- **Commit prefixes:** `feat:`, `fix:`, `chore:`, `docs:`.
+- **Trace:** Cloudflare's deployment history maps every deploy to a commit; this file's Session log is the plain-English record. The process itself feeds the Phase 5 "how I ship my own site" write-up.
 
 ---
 
@@ -108,7 +128,7 @@ Home · Work (case-study index + one page per case study) · About (bio + path) 
 
 **Now (Claude Code, prompted step by step):**
 1. ✅ Replace stale `CLAUDE.md` with this doc (Oct 26).
-2. Clean reinstall (remove leftover build folders, `npm ci`/`npm install`), then `npm run build` and `npm run dev`; fix whatever the hand-authored scaffold gets wrong.
+2. ✅ Clean reinstall (remove leftover build folders, `npm ci`/`npm install`), then `npm run build` and `npm run dev`; fix whatever the hand-authored scaffold gets wrong (Oct 26, branch `phase0-build-fixes`).
 3. Follow `DEPLOY.md` → live "hello world" at willdarkins.com. Closes Phase 0.
 
 **Will:**
@@ -133,6 +153,8 @@ Home · Work (case-study index + one page per case study) · About (bio + path) 
 
 ## Session log
 
+- **2026-10-26 (pre-deploy hardening)** — Committed Next's `AGENTS.md`; moved security headers from `_headers` into `next.config.ts` `headers()` (verified on pages in preview); noindex until launch; `compatibility_date` → 2026-10-26; dropped `@eslint/eslintrc`; rewrote `DEPLOY.md` for `portfolio_v2` + Workers Builds; added Release process. PR opened, not merged.
+- **2026-10-26 (Phase 0 build)** — Clean `npm ci`; scaffold built and linted with no code fixes. Next 15 EOL blocked OpenNext, so upgraded to Next 16.4.3 (`eslint .` flat config) + in-range `npm audit fix` (OpenNext 1.20.13, wrangler 4.153.0). Build, lint, dev and `npm run preview` all pass.
 - **2026-10-26 (repo sync)** — PR #14 merged; local main synced at `2fb376f`; `nextjs-rebuild` gone. Found leftover Jul 20 build folders locally (never deployed). Replaced stale `CLAUDE.md` with this doc. Next: clean install/build, then deploy.
 - **2026-10-26 (repositioning + redesign)** — Role has shifted from QA into security tooling, GRC and platform ownership. Repositioned site around security/governance/systems; QA moved to background. Decided writing lives on Substack (RSS-fed cards, link out, no iframe). Redesigned homepage on a Design canvas, same aesthetic: new hero, What I Do lanes, 4 case studies with outcomes, "how I got here" path, newsletter cards + subscribe band. Tagline → "Security · Systems · Fatherhood · Sports". Employer kept unnamed. Approved.
 - **2026-07-20 (Phase 0 build)** — Tailwind v4, custom loader + Zod, OpenNext on Workers, apex domain. Hand-authored scaffold (no npm in sandbox). git init + 2 commits. Pending local install/build/deploy.

@@ -37,6 +37,9 @@ export const metadata: Metadata = {
   },
   description:
     "QA engineer moving into cybersecurity. Writing about the security-learning journey, fatherhood, the Baltimore Orioles, and whatever else I notice.",
+  // Keep the placeholder out of search results until the real homepage ships
+  // (Phase 2).
+  robots: { index: false, follow: false },
 };
 
 export default function RootLayout({
