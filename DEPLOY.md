@@ -35,10 +35,13 @@ If the placeholder renders in preview, the Worker build is good.
    - **Production:** production branch **`main`**; build command
      `npx opennextjs-cloudflare build`; deploy command
      `npx opennextjs-cloudflare deploy`.
-   - **Previews Base:** turn on **Builds for Preview branches**; set the
-     **Preview command** to `npx opennextjs-cloudflare upload` (not the default
-     `npx wrangler preview`, which skips OpenNext packaging); click **Enable
-     Preview URLs**. Each PR branch then gets a preview URL.
+   - **Previews Base:** turn on **Builds for Preview branches**; keep the
+     **Preview command** at the default `npx wrangler preview` (Cloudflare's
+     Previews, beta), which needs `"previews": {}` in `wrangler.jsonc`. The build
+     command already does the OpenNext packaging, so the preview step just
+     uploads the built Worker. A custom preview command set in the dashboard
+     didn't take effect for us (Nov 1). Click **Enable Preview URLs**. Each PR
+     branch then gets a preview URL.
 5. If the API token card says **"Configured API token unavailable"**, create a new
    token there.
 6. The first build serves the site at

@@ -38,6 +38,7 @@ Next.js agent docs: @AGENTS.md
 - Remove noindex when the real homepage ships (Phase 2).
 - Phase 5: HSTS + CSP (already planned); set `poweredByHeader: false` (`x-powered-by: Next.js` is exposed); static assets under `/_next/static` don't get the security headers (low risk).
 - Phase 2: HTML is sent with `cache-control: s-maxage=31536000`; recheck caching behavior when noindex comes off.
+- When switching `open-next.config.ts` to the R2 incremental cache, check preview builds — `wrangler preview` only uploads the built Worker and doesn't populate the cache the way `opennextjs-cloudflare upload` does.
 
 ---
 
@@ -106,7 +107,7 @@ npm run deploy    # opennext build + deploy to Cloudflare Workers
 
 ## Live infrastructure (Cloudflare)
 
-- Worker `willdarkins-com`, connected to `willdarkins/portfolio_v2`. Build `npx opennextjs-cloudflare build`; deploy `npx opennextjs-cloudflare deploy`; preview command `npx opennextjs-cloudflare upload` (Previews Base tab). Build variable `NODE_VERSION=24` on both tabs.
+- Worker `willdarkins-com`, connected to `willdarkins/portfolio_v2`. Build `npx opennextjs-cloudflare build`; deploy `npx opennextjs-cloudflare deploy`; preview command `npx wrangler preview` (Previews Base tab) + `"previews": {}` in `wrangler.jsonc`. Build variable `NODE_VERSION=24` on both tabs.
 - Production URLs: https://willdarkins.com (custom domain) and willdarkins-com.willdarkins.workers.dev. Preview URLs enabled (`*-willdarkins-com.willdarkins.workers.dev`).
 - DNS: apex = Worker record; `www` CNAME → willdarkins.com, proxied.
 - Redirect rule "www to root": `http*://www.willdarkins.com/*` → `https://willdarkins.com/${2}`, 301, preserve query string. (`${1}` is the scheme wildcard; using it sent every path to /s.)
@@ -165,7 +166,7 @@ Home · Work (case-study index + one page per case study) · About (bio + path) 
 
 ## Session log
 
-- **2026-11-01 (Phase 0 live)** — Connected Workers Builds (prod main, previews on other branches, NODE_VERSION=24). First CI deploy served on workers.dev. Added willdarkins.com custom domain, www CNAME + 301 redirect rule (fixed ${1}→${2} path bug), Always Use HTTPS. Verified headers, noindex, HTTPS, redirects with curl. Branch protection ruleset on main. Next: tag v3.0.0.
+- **2026-11-01 (Phase 0 live)** — Connected Workers Builds (prod main, previews on other branches, NODE_VERSION=24). First CI deploy served on workers.dev. Added willdarkins.com custom domain, www CNAME + 301 redirect rule (fixed ${1}→${2} path bug), Always Use HTTPS. Verified headers, noindex, HTTPS, redirects with curl. Branch protection ruleset on main. Preview builds use `wrangler preview`; added `previews` block. Next: tag v3.0.0.
 - **2026-11-01 (Phase 0 close-out)**: Synced local main (PRs #14 + #15 merged). CLAUDE.md updated to match state. Next: connect Workers Builds per DEPLOY.md, first deploy from CI.
 - **2026-10-26 (pre-deploy hardening)** — Committed Next's `AGENTS.md`; moved security headers from `_headers` into `next.config.ts` `headers()` (verified on pages in preview); noindex until launch; `compatibility_date` → 2026-10-26; dropped `@eslint/eslintrc`; rewrote `DEPLOY.md` for `portfolio_v2` + Workers Builds; added Release process. Merged as PR #15.
 - **2026-10-26 (Phase 0 build)** — Clean `npm ci`; scaffold built and linted with no code fixes. Next 15 EOL blocked OpenNext, so upgraded to Next 16.4.3 (`eslint .` flat config) + in-range `npm audit fix` (OpenNext 1.20.13, wrangler 4.153.0). Build, lint, dev and `npm run preview` all pass.
