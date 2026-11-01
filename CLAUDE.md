@@ -4,7 +4,7 @@
 
 Next.js agent docs: @AGENTS.md
 
-**Last updated:** October 26, 2026 · PR #14 (Next.js Phase 0 scaffold) merged to main. Clean install + build + local Worker preview pass on Next 16, with pre-deploy hardening (branch `phase0-build-fixes`, PR open). Not yet deployed.
+**Last updated:** November 1, 2026 · PRs #14 and #15 merged; main synced. Phase 0 close-out in progress: connect Workers Builds, deploy to willdarkins.com, verify, protect main, tag v3.0.0.
 
 ---
 
@@ -14,14 +14,14 @@ Next.js agent docs: @AGENTS.md
 
 **New approved homepage:** the "Homepage Redesign" canvas artifact (claude.ai Design canvas, `project/Main.dc.html`). It supersedes the copy and structure of `claude/homepage-reference.html`; the visual system (palette, type, ink layer, portrait) is unchanged.
 
-**Phase 0 scaffold builds clean on Next 16** (Next.js + tokens + fonts + MDX layer + OpenNext/Cloudflare wiring). Clean `npm ci`, build, lint, dev and local Worker preview all pass; pre-deploy hardening (security headers, noindex) is on PR #15. Nothing is live at willdarkins.com yet: the Phase 0 deploy goes straight to the apex domain, with `noindex` until real content ships in Phase 2.
+**Phase 0 scaffold builds clean on Next 16** (Next.js + tokens + fonts + MDX layer + OpenNext/Cloudflare wiring). Clean `npm ci`, build, lint, dev and local Worker preview all pass; pre-deploy hardening (security headers, noindex) was merged in PR #15. Nothing is live at willdarkins.com yet: the Phase 0 deploy goes straight to the apex domain, with `noindex` until real content ships in Phase 2.
 
 ---
 
 ## Repo
 
 - **GitHub:** `willdarkins/portfolio_v2`. Local clone: `~/Documents/willdarkins-com/willdarkins` (Linux, zsh).
-- **main** is at `0cdc500` (Next.js scaffold via merged **PR #14** + this `CLAUDE.md`). **PR #15** (`phase0-build-fixes`: Next 16, audit fixes, pre-deploy hardening) is open. The `nextjs-rebuild` branch is gone (merged).
+- **main** is at `178c063`. **PR #14** (Next.js scaffold) and **PR #15** (`phase0-build-fixes`: Next 16, audit fixes, pre-deploy hardening) are both merged (Oct 26). Workers Builds is not connected yet. The `nextjs-rebuild` branch is gone (merged).
 - **Old Vite site** is preserved under tag **`v2-vite-final`**.
 - **Toolchain:** Node v24.15.0, npm 11.12.1.
 - **Pushing over HTTPS:** run `gh auth setup-git` once, or push with `git -c credential.helper='!gh auth git-credential' push origin main`.
@@ -153,7 +153,8 @@ Home · Work (case-study index + one page per case study) · About (bio + path) 
 
 ## Session log
 
-- **2026-10-26 (pre-deploy hardening)** — Committed Next's `AGENTS.md`; moved security headers from `_headers` into `next.config.ts` `headers()` (verified on pages in preview); noindex until launch; `compatibility_date` → 2026-10-26; dropped `@eslint/eslintrc`; rewrote `DEPLOY.md` for `portfolio_v2` + Workers Builds; added Release process. PR opened, not merged.
+- **2026-11-01 (Phase 0 close-out)**: Synced local main (PRs #14 + #15 merged). CLAUDE.md updated to match state. Next: connect Workers Builds per DEPLOY.md, first deploy from CI.
+- **2026-10-26 (pre-deploy hardening)** — Committed Next's `AGENTS.md`; moved security headers from `_headers` into `next.config.ts` `headers()` (verified on pages in preview); noindex until launch; `compatibility_date` → 2026-10-26; dropped `@eslint/eslintrc`; rewrote `DEPLOY.md` for `portfolio_v2` + Workers Builds; added Release process. Merged as PR #15.
 - **2026-10-26 (Phase 0 build)** — Clean `npm ci`; scaffold built and linted with no code fixes. Next 15 EOL blocked OpenNext, so upgraded to Next 16.4.3 (`eslint .` flat config) + in-range `npm audit fix` (OpenNext 1.20.13, wrangler 4.153.0). Build, lint, dev and `npm run preview` all pass.
 - **2026-10-26 (repo sync)** — PR #14 merged; local main synced at `2fb376f`; `nextjs-rebuild` gone. Found leftover Jul 20 build folders locally (never deployed). Replaced stale `CLAUDE.md` with this doc. Next: clean install/build, then deploy.
 - **2026-10-26 (repositioning + redesign)** — Role has shifted from QA into security tooling, GRC and platform ownership. Repositioned site around security/governance/systems; QA moved to background. Decided writing lives on Substack (RSS-fed cards, link out, no iframe). Redesigned homepage on a Design canvas, same aesthetic: new hero, What I Do lanes, 4 case studies with outcomes, "how I got here" path, newsletter cards + subscribe band. Tagline → "Security · Systems · Fatherhood · Sports". Employer kept unnamed. Approved.
