@@ -12,7 +12,8 @@
   },
   "observability": {
     "enabled": true
-  }
+  },
+  "previews": {}
   // As the site grows you may want to add, per the OpenNext docs:
   //   "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "willdarkins-com" }]
   //   an R2 bucket for the incremental cache (see open-next.config.ts)

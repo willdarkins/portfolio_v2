@@ -4,7 +4,7 @@
 
 Next.js agent docs: @AGENTS.md
 
-**Last updated:** November 1, 2026 · PRs #14 and #15 merged; main synced. Phase 0 close-out in progress: connect Workers Builds, deploy to willdarkins.com, verify, protect main, tag v3.0.0.
+**Last updated:** November 1, 2026 · Phase 0 live: willdarkins.com deployed by Workers Builds from main. Remaining: tag v3.0.0.
 
 ---
 
@@ -14,14 +14,14 @@ Next.js agent docs: @AGENTS.md
 
 **New approved homepage:** the "Homepage Redesign" canvas artifact (claude.ai Design canvas, `project/Main.dc.html`). It supersedes the copy and structure of `claude/homepage-reference.html`; the visual system (palette, type, ink layer, portrait) is unchanged.
 
-**Phase 0 scaffold builds clean on Next 16** (Next.js + tokens + fonts + MDX layer + OpenNext/Cloudflare wiring). Clean `npm ci`, build, lint, dev and local Worker preview all pass; pre-deploy hardening (security headers, noindex) was merged in PR #15. Nothing is live at willdarkins.com yet: the Phase 0 deploy goes straight to the apex domain, with `noindex` until real content ships in Phase 2.
+**Phase 0 scaffold builds clean on Next 16** (Next.js + tokens + fonts + MDX layer + OpenNext/Cloudflare wiring). Clean `npm ci`, build, lint, dev and local Worker preview all pass; pre-deploy hardening (security headers, noindex) was merged in PR #15. Phase 0 is live at https://willdarkins.com (placeholder page, noindex until Phase 2), deployed by Workers Builds on every merge to main.
 
 ---
 
 ## Repo
 
 - **GitHub:** `willdarkins/portfolio_v2`. Local clone: `~/Documents/willdarkins-com/willdarkins` (Linux, zsh).
-- **main** is at `178c063`. **PR #14** (Next.js scaffold) and **PR #15** (`phase0-build-fixes`: Next 16, audit fixes, pre-deploy hardening) are both merged (Oct 26). Workers Builds is not connected yet. The `nextjs-rebuild` branch is gone (merged).
+- **main** includes **PR #14** (Next.js scaffold) and **PR #15** (`phase0-build-fixes`: Next 16, audit fixes, pre-deploy hardening), both merged Oct 26. Workers Builds is connected (production branch `main`; preview builds + preview URLs for other branches). `main` is protected by the "protect main" ruleset (PR required, 0 approvals, Workers Builds check required, force-push and deletion blocked). The `nextjs-rebuild` branch is gone (merged).
 - **Old Vite site** is preserved under tag **`v2-vite-final`**.
 - **Toolchain:** Node v24.15.0, npm 11.12.1.
 - **Pushing over HTTPS:** run `gh auth setup-git` once, or push with `git -c credential.helper='!gh auth git-credential' push origin main`.
@@ -32,11 +32,13 @@ Next.js agent docs: @AGENTS.md
 **Known gaps (found Oct 26, fix in the phase noted):**
 - `globals.css` tokens still use blog names (`cyber`, `parenting`, `orioles`, `observations`); rename to lane names and add muted `#6e695f`. Phase 1.
 - `lib/posts.ts` + `content/posts/` still use the blog schema; convert to case studies under `content/work/`. Phase 3.
-- `README.md` still describes the blog. Update at the end of Phase 0.
 - `claude/homepage-reference.html` and the Design canvas live in the claude.ai project, not the repo.
 - Deferred major upgrades: ~~Next 16 (removes `next lint`; needs OpenNext support)~~ ✅ done Oct 26 (forced by OpenNext's support-window check after Next 15 EOL'd Oct 21), TypeScript 7, zod 4, next-mdx-remote 6, ESLint 10. Do these deliberately, after launch, one at a time.
 - Remaining audit items need zod 4 / next-mdx-remote 6; MDX is first-party only, so the next-mdx-remote advisory doesn't apply yet.
 - Remove noindex when the real homepage ships (Phase 2).
+- Phase 5: HSTS + CSP (already planned); set `poweredByHeader: false` (`x-powered-by: Next.js` is exposed); static assets under `/_next/static` don't get the security headers (low risk).
+- Phase 2: HTML is sent with `cache-control: s-maxage=31536000`; recheck caching behavior when noindex comes off.
+- When switching `open-next.config.ts` to the R2 incremental cache, check preview builds — `wrangler preview` only uploads the built Worker and doesn't populate the cache the way `opennextjs-cloudflare upload` does.
 
 ---
 
@@ -91,7 +93,7 @@ npm run deploy    # opennext build + deploy to Cloudflare Workers
 
 ## Release process
 
-**`main` is production.** Once Workers Builds is connected, every merge to `main` deploys willdarkins.com. Shipping means merging a PR, never `npm run deploy` from a laptop.
+**`main` is production.** Every merge to `main` deploys willdarkins.com. Shipping means merging a PR, never `npm run deploy` from a laptop.
 
 - **When:** one PR per phase, or per meaningful feature within a phase. Small fixes can go anytime as small PRs. Never merge with a failing build, lint or preview.
 - **Branch protection on `main`:** require a PR and a passing build check; block force-pushes and deletion.
@@ -100,6 +102,17 @@ npm run deploy    # opennext build + deploy to Cloudflare Workers
 - **Tags + GitHub Releases per phase:** `v3.0.0` = Phase 0 (live hello world), `v3.1.0` = Phase 1, and so on. (`v2-vite-final` = the old Vite site.) Each Release gets short notes.
 - **Commit prefixes:** `feat:`, `fix:`, `chore:`, `docs:`.
 - **Trace:** Cloudflare's deployment history maps every deploy to a commit; this file's Session log is the plain-English record. The process itself feeds the Phase 5 "how I ship my own site" write-up.
+
+---
+
+## Live infrastructure (Cloudflare)
+
+- Worker `willdarkins-com`, connected to `willdarkins/portfolio_v2`. Build `npx opennextjs-cloudflare build`; deploy `npx opennextjs-cloudflare deploy`; preview command `npx wrangler preview` (Previews Base tab) + `"previews": {}` in `wrangler.jsonc`. Build variable `NODE_VERSION=24` on both tabs.
+- Production URLs: https://willdarkins.com (custom domain) and willdarkins-com.willdarkins.workers.dev. Preview URLs enabled (`*-willdarkins-com.willdarkins.workers.dev`).
+- DNS: apex = Worker record; `www` CNAME → willdarkins.com, proxied.
+- Redirect rule "www to root": `http*://www.willdarkins.com/*` → `https://willdarkins.com/${2}`, 301, preserve query string. (`${1}` is the scheme wildcard; using it sent every path to /s.)
+- SSL/TLS: Always Use HTTPS on. Edge cert Google Trust Services, covers apex + *.willdarkins.com. HSTS deliberately off until Phase 5.
+- Verified Nov 1: 200 + nosniff / Referrer-Policy / X-Frame-Options on pages and 404s, noindex meta on apex and workers.dev, http→https 301, www→apex 301 with path+query, static assets long-cached.
 
 ---
 
@@ -129,7 +142,7 @@ Home · Work (case-study index + one page per case study) · About (bio + path) 
 **Now (Claude Code, prompted step by step):**
 1. ✅ Replace stale `CLAUDE.md` with this doc (Oct 26).
 2. ✅ Clean reinstall (remove leftover build folders, `npm ci`/`npm install`), then `npm run build` and `npm run dev`; fix whatever the hand-authored scaffold gets wrong (Oct 26, branch `phase0-build-fixes`).
-3. Follow `DEPLOY.md` → live "hello world" at willdarkins.com. Closes Phase 0.
+3. ✅ Follow `DEPLOY.md` → live "hello world" at willdarkins.com. Closes Phase 0 (Nov 1, live via Workers Builds).
 
 **Will:**
 - Create the Substack (name, URL) so the RSS feed exists.
@@ -153,6 +166,7 @@ Home · Work (case-study index + one page per case study) · About (bio + path) 
 
 ## Session log
 
+- **2026-11-01 (Phase 0 live)** — Connected Workers Builds (prod main, previews on other branches, NODE_VERSION=24). First CI deploy served on workers.dev. Added willdarkins.com custom domain, www CNAME + 301 redirect rule (fixed ${1}→${2} path bug), Always Use HTTPS. Verified headers, noindex, HTTPS, redirects with curl. Branch protection ruleset on main. Preview builds use `wrangler preview`; added `previews` block. Next: tag v3.0.0.
 - **2026-11-01 (Phase 0 close-out)**: Synced local main (PRs #14 + #15 merged). CLAUDE.md updated to match state. Next: connect Workers Builds per DEPLOY.md, first deploy from CI.
 - **2026-10-26 (pre-deploy hardening)** — Committed Next's `AGENTS.md`; moved security headers from `_headers` into `next.config.ts` `headers()` (verified on pages in preview); noindex until launch; `compatibility_date` → 2026-10-26; dropped `@eslint/eslintrc`; rewrote `DEPLOY.md` for `portfolio_v2` + Workers Builds; added Release process. Merged as PR #15.
 - **2026-10-26 (Phase 0 build)** — Clean `npm ci`; scaffold built and linted with no code fixes. Next 15 EOL blocked OpenNext, so upgraded to Next 16.4.3 (`eslint .` flat config) + in-range `npm audit fix` (OpenNext 1.20.13, wrangler 4.153.0). Build, lint, dev and `npm run preview` all pass.
