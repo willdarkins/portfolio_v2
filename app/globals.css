@@ -2,8 +2,8 @@
 @plugin "@tailwindcss/typography";
 
 /*
-  Design tokens — the single source of truth, mirrored from
-  claude/homepage-reference.html. Declaring them inside @theme makes Tailwind
+  Design tokens — the single source of truth, taken from the approved homepage
+  canvas in docs/design/homepage/Main.dc.html. Declaring them inside @theme makes Tailwind
   generate matching utilities automatically:
     --color-navy       -> bg-navy / text-navy / border-navy ...
     --font-serif       -> font-serif
@@ -22,6 +22,13 @@
   --color-paper-warm: #efece4;
   --color-line: #d9d5cc;
   --color-muted: #6e695f; /* small grey text (tags, dates, footer); passes 4.5:1 on paper */
+  /* Form control border: 3.51:1 on paper-warm, 3.80 on paper, 4.14 on white (WCAG 1.4.11).
+     The canvas used #b8b3a8, which fails (1.77:1 on paper-warm). */
+  --color-input-line: #827c71;
+
+  /* Text tints on the navy hero panel (white = Tailwind's built-in `white`) */
+  --color-on-navy: #cdd7e6; /* hero lede; 9.01:1 on navy */
+  --color-on-navy-muted: #9db4d8; /* hero eyebrow, "start here" note; 6.20:1 on navy */
 
   /* Lane kicker colors (What I Do lanes, case-study tags) */
   --color-devsecops: #16305a;
@@ -55,6 +62,35 @@
   --text-hero: 2.75rem; /* 44px  hero headline */
   --text-masthead: 3.375rem; /* 54px  masthead name */
 
+  /* Line heights that travel with the sizes above (from the canvas) */
+  --text-body--line-height: 1.5;
+  --text-lede--line-height: 1.55;
+  --text-lane-title--line-height: 1.18;
+  --text-title--line-height: 1.1;
+  --text-hero-sm--line-height: 1.12;
+  --text-work-number--line-height: 1;
+  --text-masthead-sm--line-height: 1;
+  --text-hero--line-height: 1.12;
+  --text-masthead--line-height: 1;
+
+  /*
+    Letter-spacing — the tracking values used in the canvas.
+    Utilities: tracking-kicker, tracking-nav ...
+  */
+  --tracking-tagline: 0.34em; /* masthead tagline */
+  --tracking-kicker: 0.16em; /* section headings, lane + newsletter kickers, hero eyebrow */
+  --tracking-tag: 0.12em; /* case-study tag line */
+  --tracking-nav: 0.11em; /* nav links */
+  --tracking-name: 0.015em; /* masthead name */
+  --tracking-title: -0.01em; /* case-study titles */
+  --tracking-hero: -0.015em; /* hero headline */
+
+  /* Desktop layout starts above the canvas's 760px mobile breakpoint. Variant: wide: */
+  --breakpoint-wide: 47.5625rem; /* 761px */
+
+  /* Page width. Utility: max-w-page */
+  --container-page: 70rem; /* 1120px */
+
   /*
     Spacing scale — the recurring layout distances in the design. Everything
     else in the design sits on Tailwind's default 4px step (p-2 = 8px, gap-1.5 = 6px).
@@ -82,6 +118,21 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
+  /* Visible keyboard focus everywhere. Components on navy switch it to gold
+     with `focus-visible:outline-gold`. */
+  :focus-visible {
+    outline: 2px solid var(--color-navy);
+    outline-offset: 3px;
+  }
+}
+
+/* Diagonal pen-stripe texture on newsletter card headers (over a lane color). */
+@utility hatch {
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgb(255 255 255 / 0.07) 0 2px,
+    transparent 2px 22px
+  );
 }
 
 /*

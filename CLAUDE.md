@@ -4,7 +4,7 @@
 
 Next.js agent docs: @AGENTS.md
 
-**Last updated:** November 13, 2026 · Phase 1 PR A (design tokens) in review. Next: PR B (components + /styleguide + Playwright/axe).
+**Last updated:** November 13, 2026 · Phase 1 PR A (design tokens) merged (#19). PR B (components + /styleguide + Playwright/axe + GitHub Actions) on `feat/phase1-components`.
 
 ---
 
@@ -12,7 +12,7 @@ Next.js agent docs: @AGENTS.md
 
 **Repositioned, Oct 2026.** Will's role has moved past QA into security tooling (Snyk/Renovate agent), GRC (DPIA framework, risk register + audits) and platform ownership (Looker + an AI ticket skill). The site no longer pitches "QA → cybersecurity"; it pitches **security, governance and the systems in between**, with QA as background. **Personal writing moves to Substack**; the site becomes the professional portfolio and pulls recent posts in via RSS.
 
-**New approved homepage:** the "Homepage Redesign" canvas artifact (claude.ai Design canvas, `project/Main.dc.html`). It supersedes the copy and structure of `claude/homepage-reference.html`; the visual system (palette, type, ink layer, portrait) is unchanged.
+**New approved homepage:** the "Homepage Redesign" canvas, exported to `docs/design/homepage/Main.dc.html`. It supersedes the copy and structure of `claude/homepage-reference.html`; the visual system (palette, type, ink layer, portrait) is unchanged.
 
 **Phase 0 scaffold builds clean on Next 16** (Next.js + tokens + fonts + MDX layer + OpenNext/Cloudflare wiring). Clean `npm ci`, build, lint, dev and local Worker preview all pass; pre-deploy hardening (security headers, noindex) was merged in PR #15. Phase 0 is live at https://willdarkins.com (placeholder page, noindex until Phase 2), deployed by Workers Builds on every merge to main.
 
@@ -25,7 +25,7 @@ Next.js agent docs: @AGENTS.md
 - **GitHub:** `willdarkins/portfolio_v2`. Local clone: `~/Documents/willdarkins-com/willdarkins` (Linux, zsh).
 - **main** includes **PR #14** (Next.js scaffold) and **PR #15** (`phase0-build-fixes`: Next 16, audit fixes, pre-deploy hardening), both merged Oct 26, plus **PR #16** (CLAUDE.md sync) and **PR #17** (Phase 0 live docs + `"previews": {}`). Workers Builds is connected (production branch `main`; preview builds + preview URLs for other branches). `main` is protected by the "protect main" ruleset (PR required, 0 approvals, Workers Builds check required, force-push and deletion blocked). The `nextjs-rebuild` branch is gone (merged).
 - **Old Vite site** is preserved under tag **`v2-vite-final`**. Phase 0 is tag **`v3.0.0`** (GitHub Release published Nov 13).
-- **Toolchain:** Node v24.15.0, npm 11.12.1.
+- **Toolchain:** Node v24.22.3, npm 11.12.1.
 - **Pushing over HTTPS:** run `gh auth setup-git` once, or push with `git -c credential.helper='!gh auth git-credential' push origin main`.
 - **This file lives in the repo as `CLAUDE.md`** so Claude Code loads it automatically.
 
@@ -33,7 +33,7 @@ Next.js agent docs: @AGENTS.md
 
 **Known gaps (found Oct 26, fix in the phase noted):**
 - `lib/posts.ts` + `content/posts/` still use the blog schema; convert to case studies under `content/work/`. Phase 3.
-- `claude/homepage-reference.html` and the Design canvas live in the claude.ai project, not the repo.
+- `claude/homepage-reference.html` (the older July design) lives only in the claude.ai project; the approved canvas is in `docs/design/homepage/`.
 - Deferred major upgrades: ~~Next 16 (removes `next lint`; needs OpenNext support)~~ ✅ done Oct 26 (forced by OpenNext's support-window check after Next 15 EOL'd Oct 21), TypeScript 7, zod 4, next-mdx-remote 6, ESLint 10. Do these deliberately, after launch, one at a time.
 - Remaining audit items need zod 4 / next-mdx-remote 6; MDX is first-party only, so the next-mdx-remote advisory doesn't apply yet.
 - Remove noindex when the real homepage ships (Phase 2).
@@ -42,6 +42,9 @@ Next.js agent docs: @AGENTS.md
 - When switching `open-next.config.ts` to the R2 incremental cache, check preview builds — `wrangler preview` only uploads the built Worker and doesn't populate the cache the way `opennextjs-cloudflare upload` does.
 - Phase 2: the page `<title>` and metadata still use the old blog positioning ("Security · Fatherhood · Baseball · Field Notes"); update them with the real homepage.
 - Phase 5: consider turning off the `workers.dev` URL once the apex is the only canonical URL (it serves noindex today).
+- Cloudflare preview builds show 'No posts found': `wrangler preview` skips the prerender cache that `opennextjs-cloudflare deploy` uploads, so pages render in the Worker and can't read content/ from disk. Production unaffected. Revisit with the R2 cache / Phase 3.
+- Pinned action SHAs and Playwright need a scheduled update path (Renovate or Dependabot for github-actions + npm). Phase 5. (`playwright-core` is pinned as its own devDependency so `@axe-core/playwright`'s open peer range doesn't pull a second copy; bump it together with `@playwright/test`.)
+- Placeholder links in `lib/site.ts` (`#`): Substack, LinkedIn, Bluesky. Fill in when Will sends them.
 
 ---
 
@@ -62,13 +65,23 @@ Next.js agent docs: @AGENTS.md
 
 ---
 
-## What's in the repo (Phase 0)
+## What's in the repo
 
 ```
 app/layout.tsx      fonts (Newsreader/Inter/Caveat via next/font) + <html> font vars + metadata (noindex until Phase 2)
 app/page.tsx        placeholder homepage — proves tokens + all 3 fonts + content layer load
-app/globals.css     Tailwind v4 + design tokens in @theme + reduced-motion-safe ink-underline
+app/styleguide/     /styleguide: tokens, type, spacing + every component with inline samples (noindex, not in nav, no file reads)
+app/globals.css     Tailwind v4 + design tokens in @theme + global focus-visible outline + hatch utility + reduced-motion-safe ink-underline
+components/         Phase 1 components (Masthead, Nav, Footer, Button, LaneLabel, LaneCard, WorkItem, SectionHeading/SectionLink,
+                    PathStrip, NewsletterCard, SubscribeBand [client, posts nowhere], NowStrip, HeroSplit, PortraitPlaceholder, ExternalLink)
+components/ink/     ink-layer primitives: InkDot, MarginNote, InkArrow, InkEmphasis, HandNumber, Signature
+components/icons/   inline SVG social icons
 components/MDXContent.tsx   renders MDX body as RSC (next-mdx-remote/rsc + remark-gfm)
+lib/site.ts         nav items, social + Substack URLs (placeholders marked)
+lib/lanes.ts        lane → color class maps
+playwright.config.ts  desktop (1280) + mobile (390) Chromium projects; webServer = npm run build && npm run start
+tests/styleguide.spec.ts  200, noindex, every section visible, no console errors, axe (wcag2a/2aa/21aa/22aa) = 0 violations
+.github/workflows/tests.yml  "Tests" workflow, job "Playwright + axe (styleguide)" on PRs to main + pushes to main
 content/posts/hello-world.mdx   sample post — repurpose dir to content/work/ for case studies
 lib/posts.ts        typed content layer: Zod schema + loaders — adapt schema for case studies
 public/_headers     long-cache for /_next/static (security headers live in next.config.ts)
@@ -90,6 +103,7 @@ npm run build     # next build (strict: type errors fail the build; Next 16 does
 npm run lint      # eslint . (flat config in eslint.config.mjs)
 npm run preview   # opennext build + preview the real Worker locally
 npm run deploy    # opennext build + deploy to Cloudflare Workers
+npm run test:e2e  # Playwright + axe on /styleguide (builds + starts the app itself; first run: npx playwright install chromium)
 ```
 
 - **Import alias:** `@/*` → repo root (e.g. `import { getAllPosts } from "@/lib/posts"`).
@@ -126,7 +140,9 @@ npm run deploy    # opennext build + deploy to Cloudflare Workers
 
 ## Design system
 
-**Colors** — navy `#16305a`, navy-deep `#0f2444`, gold `#e9c46a`, ink `#1a1a1a`, ink-soft `#3d4149`, paper `#f7f5f0`, paper-warm `#efece4`, line `#d9d5cc`, muted text `#6e695f` (replaces `#8a857a` for small grey text — passes 4.5:1). Lane/category colors — DevSecOps `#16305a`, Governance & Risk `#6a5a2c`, Platforms & AI `#4a5240`, Orioles `#a8451a`.
+**Colors** — navy `#16305a`, navy-deep `#0f2444`, gold `#e9c46a`, ink `#1a1a1a`, ink-soft `#3d4149`, paper `#f7f5f0`, paper-warm `#efece4`, line `#d9d5cc`, muted text `#6e695f` (replaces `#8a857a` for small grey text — passes 4.5:1). Lane/category colors — DevSecOps `#16305a`, Governance & Risk `#6a5a2c`, Platforms & AI `#4a5240`, Orioles `#a8451a`. Hero text on navy — on-navy `#cdd7e6` (9.01:1), on-navy-muted `#9db4d8` (6.20:1). Form borders — input-line `#827c71` (3.51:1 on paper-warm; the canvas's `#b8b3a8` failed WCAG 1.4.11). White is Tailwind's built-in `white`; don't add `#fff` by hand.
+
+**Other tokens** — tracking (`tracking-kicker`, `-nav`, `-tag`, `-tagline`, `-name`, `-title`, `-hero`), line heights paired with the type scale, `max-w-page` (1120px), breakpoint `wide:` (≥761px; the canvas's mobile layout is ≤760px).
 
 **Type** — Newsreader (serif), Inter (sans/UI), Caveat (hand). Confirmed.
 
@@ -148,15 +164,15 @@ Home · Work (case-study index + one page per case study) · About (bio + path) 
 ## Next actions
 
 **Resume here (Phase 1):**
-1. PR A (`feat/phase1-tokens`: design tokens) is in review.
-2. Next is PR B: components + `/styleguide` + Playwright/axe + GitHub Actions workflow. Check the preview URL before merging. Tag `v3.1.0` when Phase 1 merges.
+1. PR B (`feat/phase1-components`) open: check the preview URL's `/styleguide` and the "Tests" workflow before merging.
+2. After the first green run, Will adds **"Playwright + axe (styleguide)"** as a required check in the "protect main" ruleset (then note it in Repo above).
+3. Tag `v3.1.0` when Phase 1 merges.
 
 **Will:**
 - Create the Substack (name, URL) so the RSS feed exists.
 - Set GitHub's email for web-based Git operations to the personal or noreply address (web-UI merges currently use the work email). Settings only; no history rewrite.
 
 **Then (Claude Code):**
-- Phase 1 components per the new homepage structure (incl. work-item, lane, path strip, newsletter card, subscribe band).
 - Phase 2: build the approved homepage, Work index + case-study template, About.
 - Phase 3 (revised): Substack RSS fetch for newsletter cards (server-side, cached/revalidated) + MDX case studies. Drop the blog index/post template and category filtering.
 - Phases 4–6 unchanged (RSS feed of the site itself no longer needed).
@@ -174,6 +190,7 @@ Home · Work (case-study index + one page per case study) · About (bio + path) 
 
 ## Session log
 
+- **2026-11-13 (Phase 1 PR B)** — Built the Phase 1 components + ink primitives (server components; only SubscribeBand is client, and it posts nowhere) and `/styleguide` (noindex, inline samples). Added tokens: on-navy, on-navy-muted, input-line (`#827c71`, fixed from the canvas's failing `#b8b3a8`), tracking, line heights, `max-w-page`, `wide:` breakpoint; global focus-visible outline; `hatch` utility. Playwright 1.64.1 + @axe-core/playwright 4.14.0 (desktop + mobile), axe wcag2a/2aa/21aa/22aa: 0 violations. GitHub Actions "Tests" workflow (SHA-pinned actions, contents: read). External links open in the same tab.
 - **2026-11-13 (Phase 1 PR A)** — Exported the approved canvas to `docs/design/homepage/` (`Main.dc.html` + README; rendering scripts left out). Renamed blog category tokens to lanes (`cyber`→`devsecops`, `parenting`→`governance`, `observations`→`platforms`; `orioles` kept), added `muted`, added type + spacing scales taken from the canvas. Recorded Phase 1 decisions (design reference, `/styleguide`, Playwright + axe tests, Orioles color).
 - **2026-11-13 (Phase 0 complete)** — Confirmed PR #17 merged (`ab896df`) and its production build succeeded (Workers Builds). Re-verified live setup with curl: 200 + security headers, noindex, http→https 301, www→apex 301 with path+query, workers.dev 200. Tagged `v3.0.0` (annotated) on `ab896df` and published the GitHub Release; PR titles in the notes matched to GitHub. Planning chat got a read-only fine-grained GitHub token (portfolio_v2 only) and the Workers Builds connector. Next: Phase 1.
 - **2026-11-01 (Phase 0 live)** — Connected Workers Builds (prod main, previews on other branches, NODE_VERSION=24). First CI deploy served on workers.dev. Added willdarkins.com custom domain, www CNAME + 301 redirect rule (fixed ${1}→${2} path bug), Always Use HTTPS. Verified headers, noindex, HTTPS, redirects with curl. Branch protection ruleset on main. Preview builds use `wrangler preview`; added `previews` block. Merged as PR #17.
