@@ -4,7 +4,7 @@
 
 Next.js agent docs: @AGENTS.md
 
-**Last updated:** November 13, 2026 · Phase 1 PR A (design tokens) merged (#19). PR B (components + /styleguide + Playwright/axe + GitHub Actions) on `feat/phase1-components`.
+**Last updated:** November 13, 2026 · Phase 1 complete (v3.1.0): design system, /styleguide and Playwright + axe CI merged and released. Next: Phase 2 (homepage, Work, About).
 
 ---
 
@@ -18,15 +18,18 @@ Next.js agent docs: @AGENTS.md
 
 **Phase 0 complete (Nov 13):** PR #17 merged (`ab896df`), production build succeeded, annotated tag `v3.0.0` + GitHub Release "v3.0.0 — Phase 0: live on Cloudflare Workers" published. Preview builds now work on any branch.
 
+**Phase 1 complete (Nov 13):** PRs #19 (tokens) and #20 (components, /styleguide, tests) merged, production builds succeeded, annotated tag `v3.1.0` + GitHub Release "v3.1.0 — Phase 1: design system" published. Live page unchanged (Phase 0 placeholder, noindex).
+
 ---
 
 ## Repo
 
 - **GitHub:** `willdarkins/portfolio_v2`. Local clone: `~/Documents/willdarkins-com/willdarkins` (Linux, zsh).
-- **main** includes **PR #14** (Next.js scaffold) and **PR #15** (`phase0-build-fixes`: Next 16, audit fixes, pre-deploy hardening), both merged Oct 26, plus **PR #16** (CLAUDE.md sync) and **PR #17** (Phase 0 live docs + `"previews": {}`). Workers Builds is connected (production branch `main`; preview builds + preview URLs for other branches). `main` is protected by the "protect main" ruleset (PR required, 0 approvals, Workers Builds check required, force-push and deletion blocked). The `nextjs-rebuild` branch is gone (merged).
-- **Old Vite site** is preserved under tag **`v2-vite-final`**. Phase 0 is tag **`v3.0.0`** (GitHub Release published Nov 13).
+- **main** includes **PR #14** (Next.js scaffold) and **PR #15** (`phase0-build-fixes`: Next 16, audit fixes, pre-deploy hardening), both merged Oct 26, plus **PR #16** (CLAUDE.md sync), **PR #17** (Phase 0 live docs + `"previews": {}`), **PR #18** (Phase 0 complete docs), **PR #19** (Phase 1 design tokens) and **PR #20** (Phase 1 components, `/styleguide`, Playwright + axe CI). Workers Builds is connected (production branch `main`; preview builds + preview URLs for other branches). `main` is protected by the "protect main" ruleset (PR required, 0 approvals, required checks `Workers Builds: willdarkins-com` and `Playwright + axe (styleguide)` with strict up-to-date off, force-push and deletion blocked). The `nextjs-rebuild` branch is gone (merged).
+- **Old Vite site** is preserved under tag **`v2-vite-final`**. Phase 0 is tag **`v3.0.0`**, Phase 1 is tag **`v3.1.0`** (GitHub Releases published Nov 13).
 - **Toolchain:** Node v24.22.3, npm 11.12.1.
 - **Pushing over HTTPS:** run `gh auth setup-git` once, or push with `git -c credential.helper='!gh auth git-credential' push origin main`.
+- **Workflow files:** pushing changes under `.github/workflows/` needs a one-off fine-grained token (portfolio_v2 only; Contents + Workflows read/write; short expiry, deleted after), because the `gh` login deliberately has no `workflow` scope. Normal pushes, PRs and tags use `gh`.
 - **This file lives in the repo as `CLAUDE.md`** so Claude Code loads it automatically.
 
 **Working agreement:** Will's planning chat writes copy-paste prompts; Will runs them in Claude Code (CLI) and pastes results back. Claude Code reports before anything risky and waits for an OK. Never force-push, `reset --hard`, or delete branches. The planning chat can verify GitHub state itself (read-only fine-grained token scoped to `portfolio_v2`, via the desktop app's GitHub MCP) and Workers Builds status and logs (Cloudflare Workers Builds connector).
@@ -60,7 +63,7 @@ Next.js agent docs: @AGENTS.md
 - **Analytics:** Cloudflare Web Analytics or Plausible, Phase 4.
 - **Design reference (Nov 2026):** the approved homepage canvas is exported to `docs/design/homepage/`; build against it.
 - **Styleguide (Nov 2026):** public `/styleguide` route showing tokens, type and every component; not linked from nav; noindex permanently. It is the target for the Playwright + axe tests.
-- **Tests (Nov 2026):** Playwright smoke + axe accessibility checks on `/styleguide`, run on every PR via GitHub Actions; added in Phase 1 (PR B), then made a required check.
+- **Tests (Nov 2026):** Playwright smoke + axe accessibility checks on `/styleguide`, run on every PR via GitHub Actions; added in Phase 1 (PR #20) and a required check on main.
 - **Orioles color kept** for now; revisit when the newsletter cards are built.
 
 ---
@@ -163,17 +166,16 @@ Home · Work (case-study index + one page per case study) · About (bio + path) 
 
 ## Next actions
 
-**Resume here (Phase 1):**
-1. PR B (`feat/phase1-components`) open: check the preview URL's `/styleguide` and the "Tests" workflow before merging.
-2. After the first green run, Will adds **"Playwright + axe (styleguide)"** as a required check in the "protect main" ruleset (then note it in Repo above).
-3. Tag `v3.1.0` when Phase 1 merges.
+**Resume here (Phase 2):**
+1. Build the approved homepage from the Phase 1 components, the Work index + case-study template, and About.
+2. Fix the page `<title>`/metadata and remove noindex when the real homepage ships (the matching Known gaps stay until then).
+3. Start with placeholder content; Outcome numbers, social URLs and the photo (Needed from Will) fill in as they arrive.
 
 **Will:**
 - Create the Substack (name, URL) so the RSS feed exists.
 - Set GitHub's email for web-based Git operations to the personal or noreply address (web-UI merges currently use the work email). Settings only; no history rewrite.
 
 **Then (Claude Code):**
-- Phase 2: build the approved homepage, Work index + case-study template, About.
 - Phase 3 (revised): Substack RSS fetch for newsletter cards (server-side, cached/revalidated) + MDX case studies. Drop the blog index/post template and category filtering.
 - Phases 4–6 unchanged (RSS feed of the site itself no longer needed).
 
@@ -190,8 +192,9 @@ Home · Work (case-study index + one page per case study) · About (bio + path) 
 
 ## Session log
 
-- **2026-11-13 (Phase 1 PR B)** — Built the Phase 1 components + ink primitives (server components; only SubscribeBand is client, and it posts nowhere) and `/styleguide` (noindex, inline samples). Added tokens: on-navy, on-navy-muted, input-line (`#827c71`, fixed from the canvas's failing `#b8b3a8`), tracking, line heights, `max-w-page`, `wide:` breakpoint; global focus-visible outline; `hatch` utility. Playwright 1.64.1 + @axe-core/playwright 4.14.0 (desktop + mobile), axe wcag2a/2aa/21aa/22aa: 0 violations. GitHub Actions "Tests" workflow (SHA-pinned actions, contents: read). External links open in the same tab.
-- **2026-11-13 (Phase 1 PR A)** — Exported the approved canvas to `docs/design/homepage/` (`Main.dc.html` + README; rendering scripts left out). Renamed blog category tokens to lanes (`cyber`→`devsecops`, `parenting`→`governance`, `observations`→`platforms`; `orioles` kept), added `muted`, added type + spacing scales taken from the canvas. Recorded Phase 1 decisions (design reference, `/styleguide`, Playwright + axe tests, Orioles color).
+- **2026-11-13 (Phase 1 complete)** — PR #20 merged (components, /styleguide, Playwright + axe in GitHub Actions, 8/8 tests, axe 0 violations at WCAG 2.2 AA); Playwright check made required. Tagged `v3.1.0` on `d9dbb79` and published the GitHub Release. Workflow file pushed with a one-off repo-scoped token instead of adding `workflow` scope to `gh`. Next: Phase 2.
+- **2026-11-13 (Phase 1 PR B)** — Built the Phase 1 components + ink primitives (server components; only SubscribeBand is client, and it posts nowhere) and `/styleguide` (noindex, inline samples). Added tokens: on-navy, on-navy-muted, input-line (`#827c71`, fixed from the canvas's failing `#b8b3a8`), tracking, line heights, `max-w-page`, `wide:` breakpoint; global focus-visible outline; `hatch` utility. Playwright 1.64.1 + @axe-core/playwright 4.14.0 (desktop + mobile), axe wcag2a/2aa/21aa/22aa: 0 violations. GitHub Actions "Tests" workflow (SHA-pinned actions, contents: read). External links open in the same tab. Merged as PR #20.
+- **2026-11-13 (Phase 1 PR A)** — Exported the approved canvas to `docs/design/homepage/` (`Main.dc.html` + README; rendering scripts left out). Renamed blog category tokens to lanes (`cyber`→`devsecops`, `parenting`→`governance`, `observations`→`platforms`; `orioles` kept), added `muted`, added type + spacing scales taken from the canvas. Recorded Phase 1 decisions (design reference, `/styleguide`, Playwright + axe tests, Orioles color). Merged as PR #19.
 - **2026-11-13 (Phase 0 complete)** — Confirmed PR #17 merged (`ab896df`) and its production build succeeded (Workers Builds). Re-verified live setup with curl: 200 + security headers, noindex, http→https 301, www→apex 301 with path+query, workers.dev 200. Tagged `v3.0.0` (annotated) on `ab896df` and published the GitHub Release; PR titles in the notes matched to GitHub. Planning chat got a read-only fine-grained GitHub token (portfolio_v2 only) and the Workers Builds connector. Next: Phase 1.
 - **2026-11-01 (Phase 0 live)** — Connected Workers Builds (prod main, previews on other branches, NODE_VERSION=24). First CI deploy served on workers.dev. Added willdarkins.com custom domain, www CNAME + 301 redirect rule (fixed ${1}→${2} path bug), Always Use HTTPS. Verified headers, noindex, HTTPS, redirects with curl. Branch protection ruleset on main. Preview builds use `wrangler preview`; added `previews` block. Merged as PR #17.
 - **2026-11-01 (Phase 0 close-out)**: Synced local main (PRs #14 + #15 merged). CLAUDE.md updated to match state. Next: connect Workers Builds per DEPLOY.md, first deploy from CI.
