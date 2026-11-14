@@ -4,7 +4,7 @@
 
 Next.js agent docs: @AGENTS.md
 
-**Last updated:** November 13, 2026 · Phase 1 complete (v3.1.0): design system, /styleguide and Playwright + axe CI merged and released. Next: Phase 2 (homepage, Work, About).
+**Last updated:** November 14, 2026 · Phase 2 PR 2A (homepage + site shell) open for review. Next: PR 2B (Work index, case-study template, About, not-found).
 
 ---
 
@@ -19,6 +19,8 @@ Next.js agent docs: @AGENTS.md
 **Phase 0 complete (Nov 13):** PR #17 merged (`ab896df`), production build succeeded, annotated tag `v3.0.0` + GitHub Release "v3.0.0 — Phase 0: live on Cloudflare Workers" published. Preview builds now work on any branch.
 
 **Phase 1 complete (Nov 13):** PRs #19 (tokens) and #20 (components, /styleguide, tests) merged, production builds succeeded, annotated tag `v3.1.0` + GitHub Release "v3.1.0 — Phase 1: design system" published. Live page unchanged (Phase 0 placeholder, noindex).
+
+**Phase 2 in progress (Nov 14):** PR 2A (`feat/phase2-homepage`) builds the approved homepage from the Phase 1 components inside a `(site)` route-group shell, moves all homepage copy to `content/home.ts` (TK where Will still owes content), and replaces the old blog metadata. Still noindex.
 
 ---
 
@@ -43,7 +45,9 @@ Next.js agent docs: @AGENTS.md
 - Phase 5: HSTS + CSP (already planned); set `poweredByHeader: false` (`x-powered-by: Next.js` is exposed); static assets under `/_next/static` don't get the security headers (low risk).
 - Phase 2: HTML is sent with `cache-control: s-maxage=31536000`; recheck caching behavior when noindex comes off.
 - When switching `open-next.config.ts` to the R2 incremental cache, check preview builds — `wrangler preview` only uploads the built Worker and doesn't populate the cache the way `opennextjs-cloudflare upload` does.
-- Phase 2: the page `<title>` and metadata still use the old blog positioning ("Security · Fatherhood · Baseball · Field Notes"); update them with the real homepage.
+- ~~Phase 2: the page `<title>` and metadata still use the old blog positioning~~ ✅ done in PR 2A (Nov 14): title "Will Darkins — Security · Governance · Automation", new description, Open Graph (shared `OPEN_GRAPH_BASE` in `lib/site.ts`).
+- PR 2B: `/work`, `/about` and `/work/<slug>` 404 until built. `tests/home.spec.ts` allowlists their prefetch 404s and avoids `networkidle` (Next's router never finishes reading a 404 prefetch); both workarounds are marked `// remove in PR 2B`. Add `app/not-found.tsx` (unknown routes currently get Next's default 404 without the shell).
+- PathStrip on mobile: the `→` separators wrap to the start of each line (Phase 1 component behavior; same on /styleguide). Polish later.
 - Phase 5: consider turning off the `workers.dev` URL once the apex is the only canonical URL (it serves noindex today).
 - Cloudflare preview builds show 'No posts found': `wrangler preview` skips the prerender cache that `opennextjs-cloudflare deploy` uploads, so pages render in the Worker and can't read content/ from disk. Production unaffected. Revisit with the R2 cache / Phase 3.
 - Pinned action SHAs and Playwright need a scheduled update path (Renovate or Dependabot for github-actions + npm). Phase 5. (`playwright-core` is pinned as its own devDependency so `@axe-core/playwright`'s open peer range doesn't pull a second copy; bump it together with `@playwright/test`.)
@@ -71,19 +75,28 @@ Next.js agent docs: @AGENTS.md
 ## What's in the repo
 
 ```
-app/layout.tsx      fonts (Newsreader/Inter/Caveat via next/font) + <html> font vars + metadata (noindex until Phase 2)
-app/page.tsx        placeholder homepage — proves tokens + all 3 fonts + content layer load
-app/styleguide/     /styleguide: tokens, type, spacing + every component with inline samples (noindex, not in nav, no file reads)
+app/layout.tsx      root: fonts (Newsreader/Inter/Caveat via next/font) + <html> font vars + global metadata
+                    (title default/template, description, shared openGraph, robots noindex until launch)
+app/(site)/layout.tsx  public-page shell: skip link → #main, Masthead, SiteNav, <main id="main">, Footer
+app/(site)/page.tsx    homepage: Hero → What I Do → Selected Work → How I got here → From the Newsletter
+                    (+ SubscribeBand) → Now; page-level openGraph (url/title/description)
+app/styleguide/     /styleguide: tokens, type, spacing + every component with inline samples (noindex, not in nav,
+                    no file reads); outside (site), so root layout only — no shell
 app/globals.css     Tailwind v4 + design tokens in @theme + global focus-visible outline + hatch utility + reduced-motion-safe ink-underline
 components/         Phase 1 components (Masthead, Nav, Footer, Button, LaneLabel, LaneCard, WorkItem, SectionHeading/SectionLink,
                     PathStrip, NewsletterCard, SubscribeBand [client, posts nowhere], NowStrip, HeroSplit, PortraitPlaceholder, ExternalLink)
+                    + SiteNav [client: usePathname → Nav current]
 components/ink/     ink-layer primitives: InkDot, MarginNote, InkArrow, InkEmphasis, HandNumber, Signature
 components/icons/   inline SVG social icons
 components/MDXContent.tsx   renders MDX body as RSC (next-mdx-remote/rsc + remark-gfm)
-lib/site.ts         nav items, social + Substack URLs (placeholders marked)
+lib/site.ts         nav items, social + Substack URLs (placeholders marked), TAGLINE, FOOTER_NOTE, OPEN_GRAPH_BASE
+content/home.ts     all homepage copy, typed; "TK" + // TK(will) comments where content is owed (4 Outcomes, newsletter samples)
+lib/newsletter.ts   NewsletterPost type + getNewsletterPosts() (static samples now; Phase 3 swaps in the Substack RSS fetch)
 lib/lanes.ts        lane → color class maps
 playwright.config.ts  desktop (1280) + mobile (390) Chromium projects; webServer = npm run build && npm run start
 tests/styleguide.spec.ts  200, noindex, every section visible, no console errors, axe (wcag2a/2aa/21aa/22aa) = 0 violations
+tests/home.spec.ts  /: 200, noindex, shell + every section, 4 work links + Outcome lines, 3 cards + subscribe form,
+                    nav links (Home aria-current), skip link first in tab order, no console errors, axe = 0
 .github/workflows/tests.yml  "Tests" workflow, job "Playwright + axe (styleguide)" on PRs to main + pushes to main
 content/posts/hello-world.mdx   sample post — repurpose dir to content/work/ for case studies
 lib/posts.ts        typed content layer: Zod schema + loaders — adapt schema for case studies
@@ -106,7 +119,7 @@ npm run build     # next build (strict: type errors fail the build; Next 16 does
 npm run lint      # eslint . (flat config in eslint.config.mjs)
 npm run preview   # opennext build + preview the real Worker locally
 npm run deploy    # opennext build + deploy to Cloudflare Workers
-npm run test:e2e  # Playwright + axe on /styleguide (builds + starts the app itself; first run: npx playwright install chromium)
+npm run test:e2e  # Playwright + axe on / and /styleguide (builds + starts the app itself; first run: npx playwright install chromium)
 ```
 
 - **Import alias:** `@/*` → repo root (e.g. `import { getAllPosts } from "@/lib/posts"`).
@@ -167,7 +180,7 @@ Home · Work (case-study index + one page per case study) · About (bio + path) 
 ## Next actions
 
 **Resume here (Phase 2):**
-1. Build the approved homepage from the Phase 1 components, the Work index + case-study template, and About.
+1. ~~Homepage~~ (PR 2A). Next: PR 2B — Work index + case-study template (slugs from `content/home.ts`), About, `app/not-found.tsx`; then remove the `// remove in PR 2B` test workarounds.
 2. Fix the page `<title>`/metadata and remove noindex when the real homepage ships (the matching Known gaps stay until then).
 3. Start with placeholder content; Outcome numbers, social URLs and the photo (Needed from Will) fill in as they arrive.
 
@@ -191,6 +204,8 @@ Home · Work (case-study index + one page per case study) · About (bio + path) 
 ---
 
 ## Session log
+
+- **2026-11-14 (Phase 2 PR 2A)** — Homepage built from the Phase 1 components in canvas order, inside a `app/(site)` route-group shell (skip link, Masthead, SiteNav, Footer); `/styleguide` stays outside it. All copy in `content/home.ts` (canvas verbatim; Outcomes and newsletter card title/excerpt/date are "TK"). `lib/newsletter.ts` holds the `NewsletterPost` type for Phase 3's RSS fetch. Metadata: title "Will Darkins — Security · Governance · Automation", new description, Open Graph via shared `OPEN_GRAPH_BASE` (Next replaces, not merges, `openGraph` per segment); noindex kept. No component, token or workflow changes. `tests/home.spec.ts` added (desktop + mobile); 22/22 tests pass, axe 0 violations. Prefetch 404s for `/work` and `/about` allowlisted until PR 2B.
 
 - **2026-11-13 (Phase 1 complete)** — PR #20 merged (components, /styleguide, Playwright + axe in GitHub Actions, 8/8 tests, axe 0 violations at WCAG 2.2 AA); Playwright check made required. Tagged `v3.1.0` on `d9dbb79` and published the GitHub Release. Workflow file pushed with a one-off repo-scoped token instead of adding `workflow` scope to `gh`. Next: Phase 2.
 - **2026-11-13 (Phase 1 PR B)** — Built the Phase 1 components + ink primitives (server components; only SubscribeBand is client, and it posts nowhere) and `/styleguide` (noindex, inline samples). Added tokens: on-navy, on-navy-muted, input-line (`#827c71`, fixed from the canvas's failing `#b8b3a8`), tracking, line heights, `max-w-page`, `wide:` breakpoint; global focus-visible outline; `hatch` utility. Playwright 1.64.1 + @axe-core/playwright 4.14.0 (desktop + mobile), axe wcag2a/2aa/21aa/22aa: 0 violations. GitHub Actions "Tests" workflow (SHA-pinned actions, contents: read). External links open in the same tab. Merged as PR #20.

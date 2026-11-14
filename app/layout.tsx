@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Newsreader, Inter, Caveat } from "next/font/google";
+import { OPEN_GRAPH_BASE } from "@/lib/site";
 import "./globals.css";
 
 /*
@@ -32,13 +33,15 @@ const caveat = Caveat({
 export const metadata: Metadata = {
   metadataBase: new URL("https://willdarkins.com"),
   title: {
-    default: "Will Darkins — Security · Fatherhood · Baseball · Field Notes",
+    default: "Will Darkins — Security · Governance · Automation",
     template: "%s · Will Darkins",
   },
   description:
-    "QA engineer moving into cybersecurity. Writing about the security-learning journey, fatherhood, the Baltimore Orioles, and whatever else I notice.",
-  // Keep the placeholder out of search results until the real homepage ships
-  // (Phase 2).
+    "I connect the systems that should talk — and make sure they do it safely. Security tooling, governance and risk frameworks, and platform automation.",
+  // Shared fields only; pages that set openGraph spread OPEN_GRAPH_BASE in
+  // (Next replaces the whole openGraph object per segment).
+  openGraph: OPEN_GRAPH_BASE,
+  // Kept out of search results until launch; comes off in a later PR.
   robots: { index: false, follow: false },
 };
 
