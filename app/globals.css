@@ -21,17 +21,53 @@
   --color-paper: #f7f5f0;
   --color-paper-warm: #efece4;
   --color-line: #d9d5cc;
+  --color-muted: #6e695f; /* small grey text (tags, dates, footer); passes 4.5:1 on paper */
 
-  /* Category kicker colors (used by the blog later) */
-  --color-cyber: #16305a;
-  --color-parenting: #6a5a2c;
+  /* Lane kicker colors (What I Do lanes, case-study tags) */
+  --color-devsecops: #16305a;
+  --color-governance: #6a5a2c;
+  --color-platforms: #4a5240;
+  /* Newsletter "Orioles" kicker; kept for now, revisit with the newsletter cards */
   --color-orioles: #a8451a;
-  --color-observations: #4a5240;
 
   /* Type — the vars come from next/font (see app/layout.tsx) */
   --font-serif: var(--font-newsreader), Georgia, "Times New Roman", serif;
   --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
   --font-hand: var(--font-caveat), "Comic Sans MS", cursive;
+
+  /*
+    Type scale — only the sizes used in docs/design/homepage/Main.dc.html.
+    Utilities: text-meta, text-body, text-hero ...  (px values in comments)
+  */
+  --text-tag: 0.65625rem; /* 10.5px  case-study tag line (sans) */
+  --text-kicker: 0.6875rem; /* 11px  masthead tagline, lane + newsletter kickers (sans caps) */
+  --text-meta: 0.75rem; /* 12px  nav, hero eyebrow, section links, Outcome line, dates, footer, form label */
+  --text-label: 0.8125rem; /* 13px  section headings (caps), buttons */
+  --text-body: 0.9375rem; /* 15px  case-study summary, lane descriptions, newsletter card excerpt, subscribe copy, Now strip, email input */
+  --text-path: 1rem; /* 16px  "how I got here" strip steps */
+  --text-lede: 1.125rem; /* 18px  hero lede; path-strip arrows */
+  --text-note: 1.25rem; /* 20px  handwritten margin notes; work-row arrow */
+  --text-lane-title: 1.375rem; /* 22px  lane title, newsletter card title; "start here", "how I got here" + portrait notes */
+  --text-title: 1.5rem; /* 24px  case-study title, subscribe heading */
+  --text-hero-sm: 2.125rem; /* 34px  hero headline <=760px; footer "Will" signature */
+  --text-work-number: 2.25rem; /* 36px  hand-numbered Selected Work (01-04) */
+  --text-masthead-sm: 2.5rem; /* 40px  masthead name <=760px */
+  --text-hero: 2.75rem; /* 44px  hero headline */
+  --text-masthead: 3.375rem; /* 54px  masthead name */
+
+  /*
+    Spacing scale — the recurring layout distances in the design. Everything
+    else in the design sits on Tailwind's default 4px step (p-2 = 8px, gap-1.5 = 6px).
+    Utilities: px-gutter, pt-section, gap-grid ...
+  */
+  --spacing-gutter: 2.875rem; /* 46px  page side padding (sections, hero, footer) */
+  --spacing-gutter-sm: 1.25rem; /* 20px  page side padding <=760px */
+  --spacing-section: 2.75rem; /* 44px  section top padding; gap above subscribe band */
+  --spacing-hero: 3.875rem; /* 62px  hero navy panel vertical padding */
+  --spacing-grid: 1.875rem; /* 30px  column gap (lanes, newsletter cards, Now strip) */
+  --spacing-heading: 1.625rem; /* 26px  section rule -> content */
+  --spacing-row: 1.375rem; /* 22px  case-study row + path strip vertical padding */
+  --spacing-rule: 0.6875rem; /* 11px  section heading -> its rule */
 }
 
 /* Base document styling built on the tokens above. */

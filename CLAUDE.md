@@ -4,7 +4,7 @@
 
 Next.js agent docs: @AGENTS.md
 
-**Last updated:** November 13, 2026 · Phase 0 complete (v3.0.0): willdarkins.com is live, tagged and released. Next: Phase 1 design system components.
+**Last updated:** November 13, 2026 · Phase 1 PR A (design tokens) in review. Next: PR B (components + /styleguide + Playwright/axe).
 
 ---
 
@@ -32,7 +32,6 @@ Next.js agent docs: @AGENTS.md
 **Working agreement:** Will's planning chat writes copy-paste prompts; Will runs them in Claude Code (CLI) and pastes results back. Claude Code reports before anything risky and waits for an OK. Never force-push, `reset --hard`, or delete branches. The planning chat can verify GitHub state itself (read-only fine-grained token scoped to `portfolio_v2`, via the desktop app's GitHub MCP) and Workers Builds status and logs (Cloudflare Workers Builds connector).
 
 **Known gaps (found Oct 26, fix in the phase noted):**
-- `globals.css` tokens still use blog names (`cyber`, `parenting`, `orioles`, `observations`); rename to lane names and add muted `#6e695f`. Phase 1.
 - `lib/posts.ts` + `content/posts/` still use the blog schema; convert to case studies under `content/work/`. Phase 3.
 - `claude/homepage-reference.html` and the Design canvas live in the claude.ai project, not the repo.
 - Deferred major upgrades: ~~Next 16 (removes `next lint`; needs OpenNext support)~~ ✅ done Oct 26 (forced by OpenNext's support-window check after Next 15 EOL'd Oct 21), TypeScript 7, zod 4, next-mdx-remote 6, ESLint 10. Do these deliberately, after launch, one at a time.
@@ -56,6 +55,10 @@ Next.js agent docs: @AGENTS.md
 - **Hosting/deploy:** Cloudflare Workers via OpenNext (`@opennextjs/cloudflare`), git-push-to-deploy (Workers Builds). Replaces the plan's `next-on-pages`.
 - **Domain:** willdarkins.com at the apex; `www` 301 → apex.
 - **Analytics:** Cloudflare Web Analytics or Plausible, Phase 4.
+- **Design reference (Nov 2026):** the approved homepage canvas is exported to `docs/design/homepage/`; build against it.
+- **Styleguide (Nov 2026):** public `/styleguide` route showing tokens, type and every component; not linked from nav; noindex permanently. It is the target for the Playwright + axe tests.
+- **Tests (Nov 2026):** Playwright smoke + axe accessibility checks on `/styleguide`, run on every PR via GitHub Actions; added in Phase 1 (PR B), then made a required check.
+- **Orioles color kept** for now; revisit when the newsletter cards are built.
 
 ---
 
@@ -111,8 +114,9 @@ npm run deploy    # opennext build + deploy to Cloudflare Workers
 
 ## Live infrastructure (Cloudflare)
 
-- Worker `willdarkins-com`, connected to `willdarkins/portfolio_v2`. Build `npx opennextjs-cloudflare build`; deploy `npx opennextjs-cloudflare deploy`; preview command `npx wrangler preview` (Previews Base tab) + `"previews": {}` in `wrangler.jsonc`. Build variable `NODE_VERSION=24` on both tabs.
-- Production URLs: https://willdarkins.com (custom domain) and willdarkins-com.willdarkins.workers.dev. Preview URLs enabled (`*-willdarkins-com.willdarkins.workers.dev`).
+- Worker `willdarkins-com`, connected to `willdarkins/portfolio_v2`. Build `npx opennextjs-cloudflare build`; deploy `npx opennextjs-cloudflare deploy`; preview command `npx wrangler preview` (Previews Base tab) + `"previews": {}` in `wrangler.jsonc`. Build variable `NODE_VERSION=24` on both tabs. Build token: `willdarkins-com-workers-builds`.
+- A custom preview command set in the dashboard did not take effect, hence `"previews": {}` in `wrangler.jsonc`.
+- Production URLs: https://willdarkins.com (custom domain) and willdarkins-com.willdarkins.workers.dev. Preview URLs enabled (`*-willdarkins-com.willdarkins.workers.dev`); Cloudflare adds `x-robots-tag: noindex` on preview URLs.
 - DNS: apex = Worker record; `www` CNAME → willdarkins.com, proxied.
 - Redirect rule "www to root": `http*://www.willdarkins.com/*` → `https://willdarkins.com/${2}`, 301, preserve query string. (`${1}` is the scheme wildcard; using it sent every path to /s.)
 - SSL/TLS: Always Use HTTPS on. Edge cert Google Trust Services, covers apex + *.willdarkins.com. HSTS deliberately off until Phase 5.
@@ -144,8 +148,8 @@ Home · Work (case-study index + one page per case study) · About (bio + path) 
 ## Next actions
 
 **Resume here (Phase 1):**
-1. Scope Phase 1 design system components (see "Then" below), including the `globals.css` token renames from Known gaps.
-2. Build them on a feature branch; check the preview URL before merging. Tag `v3.1.0` when Phase 1 merges.
+1. PR A (`feat/phase1-tokens`: design tokens) is in review.
+2. Next is PR B: components + `/styleguide` + Playwright/axe + GitHub Actions workflow. Check the preview URL before merging. Tag `v3.1.0` when Phase 1 merges.
 
 **Will:**
 - Create the Substack (name, URL) so the RSS feed exists.
@@ -170,6 +174,7 @@ Home · Work (case-study index + one page per case study) · About (bio + path) 
 
 ## Session log
 
+- **2026-11-13 (Phase 1 PR A)** — Exported the approved canvas to `docs/design/homepage/` (`Main.dc.html` + README; rendering scripts left out). Renamed blog category tokens to lanes (`cyber`→`devsecops`, `parenting`→`governance`, `observations`→`platforms`; `orioles` kept), added `muted`, added type + spacing scales taken from the canvas. Recorded Phase 1 decisions (design reference, `/styleguide`, Playwright + axe tests, Orioles color).
 - **2026-11-13 (Phase 0 complete)** — Confirmed PR #17 merged (`ab896df`) and its production build succeeded (Workers Builds). Re-verified live setup with curl: 200 + security headers, noindex, http→https 301, www→apex 301 with path+query, workers.dev 200. Tagged `v3.0.0` (annotated) on `ab896df` and published the GitHub Release; PR titles in the notes matched to GitHub. Planning chat got a read-only fine-grained GitHub token (portfolio_v2 only) and the Workers Builds connector. Next: Phase 1.
 - **2026-11-01 (Phase 0 live)** — Connected Workers Builds (prod main, previews on other branches, NODE_VERSION=24). First CI deploy served on workers.dev. Added willdarkins.com custom domain, www CNAME + 301 redirect rule (fixed ${1}→${2} path bug), Always Use HTTPS. Verified headers, noindex, HTTPS, redirects with curl. Branch protection ruleset on main. Preview builds use `wrangler preview`; added `previews` block. Merged as PR #17.
 - **2026-11-01 (Phase 0 close-out)**: Synced local main (PRs #14 + #15 merged). CLAUDE.md updated to match state. Next: connect Workers Builds per DEPLOY.md, first deploy from CI.
