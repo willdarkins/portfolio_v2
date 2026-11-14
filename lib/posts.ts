@@ -23,9 +23,9 @@ export type Category = (typeof CATEGORIES)[number];
 
 /** Kicker color token per category — mirrors the design system. */
 export const CATEGORY_COLOR: Record<Category, string> = {
-  Cybersecurity: "var(--color-cyber)",
-  Parenting: "var(--color-parenting)",
-  Observations: "var(--color-observations)",
+  Cybersecurity: "var(--color-devsecops)",
+  Parenting: "var(--color-governance)",
+  Observations: "var(--color-platforms)",
   Orioles: "var(--color-orioles)",
 };
 

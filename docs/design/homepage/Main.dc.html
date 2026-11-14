@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Will Darkins — Home</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,600&amp;family=Inter:wght@400;500;600;700&amp;family=Caveat:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#f7f5f0;}
+a{color:#16305a;}
+a:hover{color:#0f2444;}
+.topnav a{color:#1a1a1a;text-decoration:none;position:relative;padding-bottom:12px;}
+.topnav a.active{color:#16305a;}
+.nav-ul{position:absolute;left:-9%;width:118%;bottom:0;height:15px;overflow:visible;pointer-events:none;}
+.nav-ul path{fill:none;stroke:#16305a;stroke-width:3.4;stroke-linecap:round;stroke-dasharray:240;stroke-dashoffset:240;transition:stroke-dashoffset .42s cubic-bezier(.65,0,.35,1);}
+.topnav a:hover .nav-ul path,.topnav a:focus-visible .nav-ul path{stroke-dashoffset:0;}
+.btn-solid{background:#ffffff;color:#16305a;}
+.btn-solid:hover{background:#e9c46a;color:#16305a;}
+.btn-ghost{color:#ffffff;border:1px solid rgba(255,255,255,.45);}
+.btn-ghost:hover{color:#ffffff;border-color:#ffffff;}
+.work-item{color:#1a1a1a;text-decoration:none;transition:background .15s;}
+.work-item:hover{background:rgba(22,48,90,.04);color:#1a1a1a;}
+.work-arrow{opacity:0;transform:translateX(-6px);transition:.18s;}
+.work-item:hover .work-arrow{opacity:1;transform:translateX(0);}
+.card-link{color:#1a1a1a;text-decoration:none;}
+.card-link:hover{color:#16305a;}
+.social{color:#16305a;opacity:.75;}
+.social:hover{opacity:1;color:#16305a;}
+.sub-btn:hover{background:#0f2444;}
+@media (prefers-reduced-motion: reduce){.nav-ul path,.work-arrow{transition:none;}}
+@media (max-width:760px){
+  .mast-name{font-size:40px !important;}
+  .hero-h{font-size:34px !important;}
+  .mast-row{justify-content:center !important;}
+  .pad{padding-left:20px !important;padding-right:20px !important;}
+  .work-item{grid-template-columns:40px minmax(0,1fr) !important;}
+  .work-arrow{display:none;}
+}
+</style>
+</helmet>
+
+<div style="font-family: Inter, system-ui, sans-serif; color: #1a1a1a; background: #f7f5f0; -webkit-font-smoothing: antialiased;">
+<div style="max-width: 1120px; margin: 0 auto;">
+
+<!-- MASTHEAD -->
+<header class="pad" style="padding: 34px 44px 0; text-align: center;">
+<div class="mast-row" style="display: flex; justify-content: flex-end; gap: 16px; align-items: center; margin-bottom: 4px; flex-wrap: wrap;">
+<a class="social" href="#" aria-label="GitHub" style="display: inline-flex; padding: 6px;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg></a>
+<a class="social" href="#" aria-label="LinkedIn" style="display: inline-flex; padding: 6px;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"></path></svg></a>
+<a class="social" href="#" aria-label="Bluesky" style="display: inline-flex; padding: 6px;"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 568 501" fill="currentColor"><path d="M123.121 33.664C188.241 82.553 258.281 181.68 284 234.873c25.719-53.192 95.759-152.32 160.879-201.21C491.866-1.611 568-28.906 568 57.947c0 17.346-9.945 145.713-15.778 166.555-20.275 72.453-94.155 90.933-159.875 79.748C507.222 323.8 536.444 388.56 473.333 453.32c-119.86 122.992-172.272-30.859-185.702-70.281-2.462-7.227-3.614-10.608-3.631-7.733-.017-2.875-1.169.506-3.631 7.733-13.43 39.422-65.842 193.273-185.702 70.281-63.111-64.76-33.889-129.52 80.986-149.071-65.72 11.185-139.6-7.295-159.875-79.748C9.945 203.66 0 75.293 0 57.947 0-28.906 76.135-1.611 123.121 33.664Z"></path></svg></a>
+<a class="social" href="#" aria-label="Substack" style="display: inline-flex; padding: 6px;"><svg aria-hidden="true" width="17" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 8.25H1.46V5.4h21.08v2.85zM1.46 10.8v13.2L12 18.12 22.54 24V10.8H1.46zM22.54 0H1.46v2.85h21.08V0z"></path></svg></a>
+</div>
+<div class="mast-name" style="font-family: Newsreader, Georgia, serif; font-weight: 700; font-size: 54px; letter-spacing: .015em; line-height: 1;">Will<svg aria-hidden="true" width="10" height="10" viewBox="0 0 20 20" style="margin: 0 .24em; position: relative; top: -.16em; transform: rotate(-8deg);"><path d="M9 3 C 13 2 18 5 17 10 C 17 15 12 18 8 17 C 4 16 2 12 3 8 C 4 5 5 3 9 3 Z" fill="#16305a"></path></svg>Darkins</div>
+<div style="font-size: 11px; letter-spacing: .34em; text-transform: uppercase; color: #3d4149; margin-top: 11px;">Security · Systems · Fatherhood · Sports</div>
+<div style="border-bottom: 3px double #1a1a1a; margin-top: 16px;"></div>
+</header>
+
+<nav class="topnav pad" aria-label="Primary" style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; padding: 13px 44px 14px; border-bottom: 1px solid #d9d5cc; font-size: 12px; font-weight: 600; letter-spacing: .11em; text-transform: uppercase;">
+<a href="#" class="active">Home<svg class="nav-ul" aria-hidden="true" viewBox="0 0 120 18" preserveAspectRatio="none"><path d="M3 10 C 16 3 27 15 42 8 C 57 2 66 16 82 9 C 96 4 105 14 117 7"></path></svg></a>
+<a href="#">Work<svg class="nav-ul" aria-hidden="true" viewBox="0 0 120 18" preserveAspectRatio="none"><path d="M3 11 C 20 5 32 14 48 9 C 63 4 73 14 88 8 C 100 4 108 13 117 9"></path></svg></a>
+<a href="#">Newsletter ↗<svg class="nav-ul" aria-hidden="true" viewBox="0 0 120 18" preserveAspectRatio="none"><path d="M4 9 C 19 15 30 4 46 10 C 60 15 71 5 86 11 C 99 15 108 6 117 10"></path></svg></a>
+<a href="#">About<svg class="nav-ul" aria-hidden="true" viewBox="0 0 120 18" preserveAspectRatio="none"><path d="M4 8 C 17 14 29 5 44 11 C 59 16 68 6 84 10 C 97 13 107 7 117 11"></path></svg></a>
+</nav>
+
+<!-- HERO -->
+<section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));">
+<div class="pad" style="background: #16305a; color: #ffffff; padding: 62px 46px; display: flex; flex-direction: column; justify-content: center;">
+<div style="font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: #9db4d8; margin-bottom: 20px;">Security · Governance · Automation</div>
+<h1 class="hero-h" style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 600; font-size: 44px; line-height: 1.12; letter-spacing: -.015em;">I connect the systems that <em style="font-style: italic; color: #e9c46a; position: relative; display: inline-block;">should talk<svg aria-hidden="true" viewBox="0 0 300 24" preserveAspectRatio="none" style="position: absolute; left: -3%; width: 106%; bottom: -.18em; height: .38em;"><path d="M6 15 C 70 5 130 21 190 12 S 250 6 294 14" fill="none" stroke="#e9c46a" stroke-width="4" stroke-linecap="round"></path></svg></em> — and make sure they do it safely.</h1>
+<p style="font-family: Newsreader, Georgia, serif; font-size: 18px; line-height: 1.55; color: #cdd7e6; margin: 19px 0 0; max-width: 460px;">QA taught me how software breaks. Now I build the security tooling, data-governance frameworks and platform automations that keep it from breaking in the first place.</p>
+<div style="display: flex; gap: 13px; margin-top: 32px; align-items: center; flex-wrap: wrap;">
+<a href="#" class="btn-solid" style="font-size: 13px; font-weight: 600; text-decoration: none; padding: 13px 20px; border-radius: 4px;">See the work</a>
+<a href="#" class="btn-ghost" style="font-size: 13px; font-weight: 600; text-decoration: none; padding: 12px 20px; border-radius: 4px;">Read the newsletter ↗</a>
+<span style="display: flex; align-items: center; gap: 4px; margin-left: 6px;">
+<svg aria-hidden="true" width="46" height="30" viewBox="0 0 46 30" style="transform: rotate(6deg);"><path d="M42 8 C 30 6 16 10 8 22" fill="none" stroke="#9db4d8" stroke-width="2.2" stroke-linecap="round"></path><path d="M8 22 l 11 -1 M8 22 l 3 -10" fill="none" stroke="#9db4d8" stroke-width="2.2" stroke-linecap="round"></path></svg>
+<span style="font-family: Caveat, cursive; font-weight: 600; font-size: 21px; color: #9db4d8; transform: rotate(-4deg); white-space: nowrap;">start here</span>
+</span>
+</div>
+</div>
+
+<div class="pad" style="padding: 40px 46px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+<div style="width: 100%; max-width: 340px;">
+<svg role="img" aria-label="Pen-and-ink sketch portrait of Will" viewBox="0 0 380 460" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-linecap="round" stroke-linejoin="round" style="display: block; width: 100%; height: auto;">
+<ellipse cx="196" cy="205" rx="120" ry="140" fill="#e9c46a" opacity="0.16"></ellipse>
+<path d="M34 40 C 150 32 250 34 344 40 C 350 150 350 320 344 420 C 230 428 130 426 34 420 C 28 300 30 150 34 40" stroke="#16305a" stroke-width="2" opacity="0.55"></path>
+<path d="M118 132 C 108 78 168 48 200 52 C 252 58 282 92 276 140 C 270 120 258 104 238 96 C 250 108 256 122 256 134 C 244 116 226 104 206 102 C 214 112 218 122 216 130 C 202 112 176 106 156 118 C 168 116 178 120 182 128 C 162 120 138 124 126 142 C 128 136 130 132 118 132 Z" stroke="#16305a" stroke-width="2.4"></path>
+<path d="M128 140 C 118 182 120 224 142 258 C 156 280 176 296 200 296 C 226 296 248 278 262 254 C 280 222 282 180 272 140" stroke="#16305a" stroke-width="2.6"></path>
+<path d="M270 196 C 284 194 288 212 276 224" stroke="#16305a" stroke-width="2.2"></path>
+<path d="M150 186 C 162 179 180 179 190 186" stroke="#16305a" stroke-width="2.4"></path>
+<path d="M212 186 C 224 179 242 179 252 186" stroke="#16305a" stroke-width="2.4"></path>
+<path d="M154 200 C 164 194 180 194 188 202" stroke="#16305a" stroke-width="2.2"></path>
+<path d="M214 202 C 224 194 240 194 250 200" stroke="#16305a" stroke-width="2.2"></path>
+<circle cx="171" cy="201" r="2.6" fill="#16305a"></circle>
+<circle cx="231" cy="201" r="2.6" fill="#16305a"></circle>
+<path d="M200 200 C 197 222 192 238 202 246 C 208 248 214 246 218 242" stroke="#16305a" stroke-width="2.2"></path>
+<path d="M176 264 C 192 273 214 273 228 263" stroke="#16305a" stroke-width="2.4"></path>
+<path d="M172 250 C 176 258 182 262 190 263" stroke="#16305a" stroke-width="1.6" opacity="0.6"></path>
+<path d="M180 296 C 178 314 176 326 172 338" stroke="#16305a" stroke-width="2.2"></path>
+<path d="M224 296 C 226 314 228 326 232 338" stroke="#16305a" stroke-width="2.2"></path>
+<path d="M96 430 C 104 372 140 342 200 342 C 260 342 296 372 304 430" stroke="#16305a" stroke-width="2.6"></path>
+<path d="M182 344 C 190 360 194 372 200 380 C 206 372 210 360 218 344" stroke="#16305a" stroke-width="2.2"></path>
+<path d="M164 360 C 150 372 142 392 140 410" stroke="#16305a" stroke-width="1.8" opacity="0.7"></path>
+<path d="M236 360 C 250 372 258 392 260 410" stroke="#16305a" stroke-width="1.8" opacity="0.7"></path>
+<g stroke="#16305a" stroke-width="1.5" opacity="0.4"><path d="M150 244 l 20 -12"></path><path d="M156 256 l 22 -13"></path><path d="M164 266 l 20 -12"></path><path d="M246 244 l 18 -10"></path><path d="M252 256 l 18 -10"></path></g>
+<path d="M268 150 C 278 182 276 224 258 256" stroke="#e9c46a" stroke-width="3.5" opacity="0.7"></path>
+</svg>
+</div>
+<div style="display: flex; align-items: center; gap: 6px; margin-top: 10px;">
+<svg aria-hidden="true" width="26" height="20" viewBox="0 0 26 20"><path d="M22 4 C 14 4 6 8 4 16" fill="none" stroke="#16305a" stroke-width="2" stroke-linecap="round"></path><path d="M4 16 l 8 -1 M4 16 l 2 -8" fill="none" stroke="#16305a" stroke-width="2" stroke-linecap="round"></path></svg>
+<span style="font-family: Caveat, cursive; font-weight: 600; font-size: 22px; color: #16305a; transform: rotate(-2deg);">drawn from life, mostly</span>
+</div>
+</div>
+</section>
+
+<!-- WHAT I DO: three lanes -->
+<section class="pad" style="padding: 44px 46px 8px;">
+<div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid #1a1a1a; padding-bottom: 11px; margin-bottom: 26px;">
+<h2 style="margin: 0; font-size: 13px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;">What I Do</h2>
+<span style="font-family: Caveat, cursive; font-weight: 600; font-size: 20px; color: #a8451a; transform: rotate(-3deg);">three lanes, one habit ✎</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 30px;">
+<div>
+<div style="font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #16305a;">DevSecOps</div>
+<h3 style="font-family: Newsreader, Georgia, serif; font-weight: 600; font-size: 22px; line-height: 1.18; margin: 8px 0 8px;">Security that lives in the pipeline</h3>
+<p style="font-family: Newsreader, Georgia, serif; font-size: 15.5px; line-height: 1.5; color: #3d4149; margin: 0;">Vulnerability triage, dependency hygiene and the automation that keeps a scanner queue from turning into noise.</p>
+</div>
+<div>
+<div style="font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #6a5a2c;">Governance &amp; Risk</div>
+<h3 style="font-family: Newsreader, Georgia, serif; font-weight: 600; font-size: 22px; line-height: 1.18; margin: 8px 0 8px;">Knowing where the data goes</h3>
+<p style="font-family: Newsreader, Georgia, serif; font-size: 15.5px; line-height: 1.5; color: #3d4149; margin: 0;">Data-protection impact assessments, risk registers and internal audits — written so non-security people can actually use them.</p>
+</div>
+<div>
+<div style="font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #4a5240;">Platforms &amp; AI</div>
+<h3 style="font-family: Newsreader, Georgia, serif; font-weight: 600; font-size: 22px; line-height: 1.18; margin: 8px 0 8px;">Owning the tools, then automating them</h3>
+<p style="font-family: Newsreader, Georgia, serif; font-size: 15.5px; line-height: 1.5; color: #3d4149; margin: 0;">Running an analytics platform end to end, and building AI agents that take the repetitive work off people’s plates.</p>
+</div>
+</div>
+</section>
+
+<!-- SELECTED WORK (case studies) -->
+<section class="pad" style="padding: 44px 46px 6px;">
+<div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid #1a1a1a; padding-bottom: 11px; margin-bottom: 4px;">
+<h2 style="margin: 0; font-size: 13px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;">Selected Work</h2>
+<a href="#" style="font-size: 12px; font-weight: 600; text-decoration: none;">All case studies →</a>
+</div>
+
+<a class="work-item" href="#" style="display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 24px; align-items: center; padding: 22px 8px; border-bottom: 1px solid #d9d5cc;">
+<span aria-hidden="true" style="font-family: Caveat, cursive; font-weight: 700; font-size: 36px; color: #16305a; opacity: .75; line-height: 1; text-align: center;">01</span>
+<div>
+<div style="display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;"><h3 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 600; font-size: 24px; letter-spacing: -.01em; line-height: 1.1;">Snyk × Renovate Triage Agent</h3><span style="font-size: 10.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #6e695f;">DevSecOps · AI Agents · CI</span></div>
+<p style="font-family: Newsreader, Georgia, serif; font-size: 15px; line-height: 1.5; color: #3d4149; margin: 6px 0 0;">Two tools were flagging the same dependencies and nobody trusted either queue. I built an agent that reconciles Snyk findings against Renovate PRs so each fix lands once.</p>
+<div style="font-size: 12px; font-weight: 600; color: #16305a; margin-top: 8px;">Outcome: [YOUR RESULT — e.g. duplicate tickets cut by X%]</div>
+</div>
+<span class="work-arrow" aria-hidden="true" style="font-size: 20px; color: #16305a;">→</span>
+</a>
+
+<a class="work-item" href="#" style="display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 24px; align-items: center; padding: 22px 8px; border-bottom: 1px solid #d9d5cc;">
+<span aria-hidden="true" style="font-family: Caveat, cursive; font-weight: 700; font-size: 36px; color: #16305a; opacity: .75; line-height: 1; text-align: center;">02</span>
+<div>
+<div style="display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;"><h3 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 600; font-size: 24px; letter-spacing: -.01em; line-height: 1.1;">A DPIA Framework From Scratch</h3><span style="font-size: 10.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #6e695f;">GRC · Privacy · Data Mapping</span></div>
+<p style="font-family: Newsreader, Georgia, serif; font-size: 15px; line-height: 1.5; color: #3d4149; margin: 6px 0 0;">Designed the company’s data-protection impact assessment: a data-flow matrix for every system, plus a visual stakeholders can read without a privacy background.</p>
+<div style="font-size: 12px; font-weight: 600; color: #16305a; margin-top: 8px;">Outcome: [YOUR RESULT — e.g. N systems mapped, adopted company-wide]</div>
+</div>
+<span class="work-arrow" aria-hidden="true" style="font-size: 20px; color: #16305a;">→</span>
+</a>
+
+<a class="work-item" href="#" style="display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 24px; align-items: center; padding: 22px 8px; border-bottom: 1px solid #d9d5cc;">
+<span aria-hidden="true" style="font-family: Caveat, cursive; font-weight: 700; font-size: 36px; color: #16305a; opacity: .75; line-height: 1; text-align: center;">03</span>
+<div>
+<div style="display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;"><h3 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 600; font-size: 24px; letter-spacing: -.01em; line-height: 1.1;">Department Risk Register &amp; Audits</h3><span style="font-size: 10.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #6e695f;">Risk · Audit · Process</span></div>
+<p style="font-family: Newsreader, Georgia, serif; font-size: 15px; line-height: 1.5; color: #3d4149; margin: 6px 0 0;">Built a department-by-department risk register and use it to run internal audits — turning “we should look at that” into owners, ratings and follow-ups.</p>
+<div style="font-size: 12px; font-weight: 600; color: #16305a; margin-top: 8px;">Outcome: [YOUR RESULT — e.g. N departments audited]</div>
+</div>
+<span class="work-arrow" aria-hidden="true" style="font-size: 20px; color: #16305a;">→</span>
+</a>
+
+<a class="work-item" href="#" style="display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 24px; align-items: center; padding: 22px 8px; border-bottom: 1px solid #d9d5cc;">
+<span aria-hidden="true" style="font-family: Caveat, cursive; font-weight: 700; font-size: 36px; color: #16305a; opacity: .75; line-height: 1; text-align: center;">04</span>
+<div>
+<div style="display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;"><h3 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 600; font-size: 24px; letter-spacing: -.01em; line-height: 1.1;">Looker, Owned and Automated</h3><span style="font-size: 10.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #6e695f;">Analytics · Platform Admin · AI</span></div>
+<p style="font-family: Newsreader, Georgia, serif; font-size: 15px; line-height: 1.5; color: #3d4149; margin: 6px 0 0;">Took over the company’s Looker instance and built an AI skill that handles most incoming tickets end to end, with a human check before anything ships.</p>
+<div style="font-size: 12px; font-weight: 600; color: #16305a; margin-top: 8px;">Outcome: [YOUR RESULT — e.g. ticket turnaround from X days to Y hours]</div>
+</div>
+<span class="work-arrow" aria-hidden="true" style="font-size: 20px; color: #16305a;">→</span>
+</a>
+</section>
+
+<!-- THE PATH -->
+<section class="pad" style="padding: 40px 46px 4px;">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; padding: 22px 26px; border: 1px solid #d9d5cc; border-radius: 6px; background: #efece4;">
+<span style="font-family: Caveat, cursive; font-weight: 600; font-size: 22px; color: #16305a; transform: rotate(-3deg);">how I got here</span>
+<span style="font-family: Newsreader, Georgia, serif; font-size: 16px; color: #3d4149;"><b style="color: #1a1a1a; font-weight: 600;">Radio &amp; TV</b> production</span>
+<span aria-hidden="true" style="color: #16305a; font-size: 18px;">→</span>
+<span style="font-family: Newsreader, Georgia, serif; font-size: 16px; color: #3d4149;"><b style="color: #1a1a1a; font-weight: 600;">QA</b> &amp; Playwright</span>
+<span aria-hidden="true" style="color: #16305a; font-size: 18px;">→</span>
+<span style="font-family: Newsreader, Georgia, serif; font-size: 16px; color: #3d4149;"><b style="color: #1a1a1a; font-weight: 600;">Release</b> management</span>
+<span aria-hidden="true" style="color: #16305a; font-size: 18px;">→</span>
+<span style="font-family: Newsreader, Georgia, serif; font-size: 16px; color: #3d4149;"><b style="color: #1a1a1a; font-weight: 600;">Security</b>, governance &amp; platforms</span>
+</div>
+</section>
+
+<!-- FROM THE NEWSLETTER -->
+<section class="pad" style="padding: 46px 46px 10px;">
+<div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid #1a1a1a; padding-bottom: 11px; margin-bottom: 26px; gap: 12px; flex-wrap: wrap;">
+<h2 style="margin: 0; font-size: 13px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;">From the Newsletter</h2>
+<a href="#" style="font-size: 12px; font-weight: 600; text-decoration: none;">All posts on Substack ↗</a>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 30px;">
+<a class="card-link" href="#" style="display: block; position: relative;">
+<span style="position: absolute; top: -16px; right: -4px; font-family: Caveat, cursive; font-weight: 600; font-size: 20px; color: #a8451a; transform: rotate(6deg);">the fun one ✎</span>
+<div style="height: 120px; border-radius: 4px; margin-bottom: 13px; background: #16305a; background-image: repeating-linear-gradient(135deg, rgba(255,255,255,.06) 0 2px, transparent 2px 22px);"></div>
+<span style="font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #a8451a;">Orioles</span>
+<h3 style="font-family: Newsreader, Georgia, serif; font-weight: 600; font-size: 21px; line-height: 1.16; margin: 9px 0 8px;">[Latest Orioles post title]</h3>
+<p style="font-family: Newsreader, Georgia, serif; font-size: 14.5px; line-height: 1.5; color: #3d4149; margin: 0;">Pulled automatically from your Substack feed — title, subtitle and date.</p>
+<div style="font-size: 12px; color: #6e695f; margin-top: 11px;">[Date] · Substack</div>
+</a>
+<a class="card-link" href="#" style="display: block;">
+<div style="height: 120px; border-radius: 4px; margin-bottom: 13px; background: #6a5a2c; background-image: repeating-linear-gradient(135deg, rgba(255,255,255,.07) 0 2px, transparent 2px 22px);"></div>
+<span style="font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #6a5a2c;">Parenting</span>
+<h3 style="font-family: Newsreader, Georgia, serif; font-weight: 600; font-size: 21px; line-height: 1.16; margin: 9px 0 8px;">The 5 A.M. Wake-Up Call Nobody Warns You About</h3>
+<p style="font-family: Newsreader, Georgia, serif; font-size: 14.5px; line-height: 1.5; color: #3d4149; margin: 0;">Toddlers, sleep math, and negotiating with someone who can’t tell time.</p>
+<div style="font-size: 12px; color: #6e695f; margin-top: 11px;">[Date] · Substack</div>
+</a>
+<a class="card-link" href="#" style="display: block;">
+<div style="height: 120px; border-radius: 4px; margin-bottom: 13px; background: #4a5240; background-image: repeating-linear-gradient(135deg, rgba(255,255,255,.07) 0 2px, transparent 2px 22px);"></div>
+<span style="font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #4a5240;">Field Notes</span>
+<h3 style="font-family: Newsreader, Georgia, serif; font-weight: 600; font-size: 21px; line-height: 1.16; margin: 9px 0 8px;">[Latest observations post title]</h3>
+<p style="font-family: Newsreader, Georgia, serif; font-size: 14.5px; line-height: 1.5; color: #3d4149; margin: 0;">Whatever caught your eye this week, in your own voice.</p>
+<div style="font-size: 12px; color: #6e695f; margin-top: 11px;">[Date] · Substack</div>
+</a>
+</div>
+
+<!-- subscribe band -->
+<form style="margin-top: 44px; padding: 32px 30px; background: #efece4; border: 1px solid #d9d5cc; border-radius: 6px; display: flex; flex-wrap: wrap; gap: 18px 28px; align-items: center; justify-content: space-between;">
+<div style="flex: 1 1 340px;">
+<div style="font-family: Newsreader, Georgia, serif; font-weight: 600; font-size: 24px; line-height: 1.2;">Get the newsletter</div>
+<p style="font-family: Newsreader, Georgia, serif; font-size: 15px; line-height: 1.5; color: #3d4149; margin: 6px 0 0;">Baseball, fatherhood and whatever I notice — the occasional security piece, too. Free, on Substack.</p>
+</div>
+<div style="flex: 1 1 340px; display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end;">
+<label style="flex: 1 1 200px; display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 600; color: #3d4149;">Email address<input type="email" placeholder="you@example.com" style="font-family: Inter, system-ui, sans-serif; font-size: 15px; padding: 12px 14px; border: 1px solid #b8b3a8; border-radius: 4px; background: #ffffff; color: #1a1a1a; min-height: 44px; box-sizing: border-box;"></label>
+<button type="button" class="sub-btn" style="font-family: Inter, system-ui, sans-serif; font-size: 13px; font-weight: 600; padding: 0 22px; min-height: 44px; border: 0; border-radius: 4px; background: #16305a; color: #ffffff; cursor: pointer;">Subscribe</button>
+</div>
+</form>
+</section>
+
+<!-- NOW STRIP -->
+<section class="pad" style="padding: 36px 46px 46px;">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 18px 30px; padding: 26px 0; border-top: 1px solid #d9d5cc; border-bottom: 1px solid #d9d5cc;">
+<span style="font-family: Newsreader, Georgia, serif; font-size: 15px; color: #3d4149; text-align: center;"><b style="color: #1a1a1a; font-weight: 600;">Building:</b> security automation with AI agents</span>
+<span style="font-family: Newsreader, Georgia, serif; font-size: 15px; color: #3d4149; text-align: center;"><b style="color: #1a1a1a; font-weight: 600;">Studying:</b> CompTIA Security+</span>
+<span style="font-family: Newsreader, Georgia, serif; font-size: 15px; color: #3d4149; text-align: center;"><b style="color: #1a1a1a; font-weight: 600;">Certified:</b> Google Cybersecurity</span>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer class="pad" style="padding: 22px 46px 34px; display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center; font-size: 12px; color: #6e695f;">
+<span style="font-family: Caveat, cursive; font-weight: 600; font-size: 34px; color: #16305a; transform: rotate(-4deg); line-height: 1;">Will</span>
+<span>© 2026 · Built with Next.js on Cloudflare · Writing lives on Substack</span>
+</footer>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":3150}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
